@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Simple POS</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="reportsMenu">
+    <property name="title">
+     <string>&amp;Laporan</string>
+    </property>
+    <addaction name="reportSalesDetailDailyAction"/>
+    <addaction name="reportSalesDetailAction"/>
+    <addaction name="reportMonthlySalesAction"/>
+   </widget>
+   <widget class="QMenu" name="settingsMenu">
+    <property name="title">
+     <string>&amp;Peralatan</string>
+    </property>
+    <addaction name="actionKalkulator"/>
+    <addaction name="settingsAction"/>
+   </widget>
+   <widget class="QMenu" name="salesMenu">
+    <property name="title">
+     <string>&amp;Penjualan</string>
+    </property>
+    <addaction name="salesAction"/>
+    <addaction name="salesReturnAction"/>
+    <addaction name="separator"/>
+    <addaction name="customerAction"/>
+   </widget>
+   <widget class="QMenu" name="purchasingMenu">
+    <property name="title">
+     <string>&amp;Pembelian</string>
+    </property>
+    <addaction name="purchasingAction"/>
+    <addaction name="purchasingReturnAction"/>
+    <addaction name="separator"/>
+    <addaction name="supplierAction"/>
+   </widget>
+   <widget class="QMenu" name="inventoryMenu">
+    <property name="title">
+     <string>&amp;Inventori</string>
+    </property>
+    <addaction name="productAction"/>
+    <addaction name="productCategoryAction"/>
+    <addaction name="separator"/>
+    <addaction name="stockAdjustmentAction"/>
+    <addaction name="stockHistoryAction"/>
+   </widget>
+   <widget class="QMenu" name="aboutMenu">
+    <property name="title">
+     <string>&amp;Bantuan</string>
+    </property>
+    <addaction name="aboutAction"/>
+   </widget>
+   <addaction name="reportsMenu"/>
+   <addaction name="salesMenu"/>
+   <addaction name="inventoryMenu"/>
+   <addaction name="purchasingMenu"/>
+   <addaction name="settingsMenu"/>
+   <addaction name="aboutMenu"/>
+  </widget>
+  <action name="settingsAction">
+   <property name="text">
+    <string>&amp;Pengaturan</string>
+   </property>
+  </action>
+  <action name="reportSalesDetailDailyAction">
+   <property name="text">
+    <string>Laporan Rincian Penjualan Harian</string>
+   </property>
+  </action>
+  <action name="reportSalesDetailAction">
+   <property name="text">
+    <string>Laporan Rekap Penjualan Harian</string>
+   </property>
+  </action>
+  <action name="reportMonthlySalesAction">
+   <property name="text">
+    <string>Laporan Rekap Penjualan Bulanan</string>
+   </property>
+  </action>
+  <action name="salesAction">
+   <property name="text">
+    <string>&amp;Penjualan</string>
+   </property>
+  </action>
+  <action name="salesReturnAction">
+   <property name="text">
+    <string>&amp;Retur Penjualan</string>
+   </property>
+  </action>
+  <action name="productAction">
+   <property name="text">
+    <string>&amp;Produk</string>
+   </property>
+  </action>
+  <action name="productCategoryAction">
+   <property name="text">
+    <string>&amp;Kategori Produk</string>
+   </property>
+  </action>
+  <action name="stockAdjustmentAction">
+   <property name="text">
+    <string>Penyesuaian &amp;Stok</string>
+   </property>
+  </action>
+  <action name="stockHistoryAction">
+   <property name="text">
+    <string>&amp;Riwayat Stok</string>
+   </property>
+  </action>
+  <action name="aboutAction">
+   <property name="text">
+    <string>&amp;Tentang Simple POS</string>
+   </property>
+  </action>
+  <action name="action_Beranda">
+   <property name="text">
+    <string>&amp;Beranda</string>
+   </property>
+   <property name="font">
+    <font>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+  </action>
+  <action name="action_Beranda_2">
+   <property name="text">
+    <string>&amp;Beranda</string>
+   </property>
+  </action>
+  <action name="purchasingAction">
+   <property name="text">
+    <string>&amp;Pembelian</string>
+   </property>
+  </action>
+  <action name="purchasingReturnAction">
+   <property name="text">
+    <string>&amp;Retur Pembelian</string>
+   </property>
+  </action>
+  <action name="supplierAction">
+   <property name="text">
+    <string>Pemasok</string>
+   </property>
+  </action>
+  <action name="customerAction">
+   <property name="text">
+    <string>Pelanggan</string>
+   </property>
+  </action>
+  <action name="actionKalkulator">
+   <property name="text">
+    <string>Kalkulator</string>
+   </property>
+  </action>
+  <action name="action_Printer">
+   <property name="text">
+    <string>Pengaturan &amp;Printer</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

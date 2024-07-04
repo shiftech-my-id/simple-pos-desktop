@@ -1,0 +1,38 @@
+<p align=center>
+  <b>LAPORAN REKAPITULASI PENJUALAN HARIAN</b>
+  <br/><b>{STORE_NAME}</b>
+  <br/>Tanggal: {DATE}
+</p>
+<style>
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border:1px solid black;
+}
+</style>
+<table width=100% align=center cellspacing=0 cellpadding=2>
+<thead>
+  <tr style="background:#0ce;font-weight:bold;font-size:8pt;">
+    <th align=center width="5%" align="center">NO</th>
+    <th align=center>PRODUK</th>
+    <th align=center width="15%">TERJUAL</th>
+    <th align=center width="13%">MODAL (Rp.)</th>
+    <th align=center width="13%">OMSET (Rp.)</th>
+    <th align=center width="13%">LABA (Rp.)</th>
+  </tr>
+</thead>
+<tbody>
+  {ITEMS}
+</tbody>
+<tfoot>
+  <tr style="background:#0ce;font-weight:bold;font-size:8pt;">
+    <th colspan="2" align="right">TOTAL</th>
+    <th align="center">{TOTAL_QUANTITY} produk</th>
+    <th align="right">{TOTAL_COST}</th>
+    <th align="right">{TOTAL_PRICE}</th>
+    <th align="right">{TOTAL_PROFIT}</th>
+  </tr>
+</tfoot>
+</table>
+

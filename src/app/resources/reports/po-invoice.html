@@ -1,0 +1,42 @@
+<h4 align=center>FAKTUR PEMBELIAN</h4>
+<table width=100% cellpadding=2 cellspacing=0 >
+  <tr>
+    <td><b>{STORE_NAME}</b></td>
+    <td width="15%">Invoice No.:</td>
+    <td width="15%" align="right">#{ORDER_ID}</td>
+  </tr>
+  <tr>
+    <td><small><i>{STORE_ADDRESS}</i></small></td>
+    <td>Tanggal:</td>
+    <td align="right">{ORDER_DATE}</td>
+   </tr>
+</table>
+<hr>
+<table cellpadding=2 cellspacing=0 >
+  <tr>
+    <td>Pemasok</td>
+    <td>:</td>
+    <td>{SUPPLIER_NAME}</td>
+  </tr>
+  <tr>
+    <td>Alamat</td>
+    <td>:</td>
+    <td>{SUPPLIER_ADDRESS}</td>
+  </tr>
+</table>
+<table width=100% align=center border=0 cellspacing=0 cellpadding=2>
+  <tr style="background:#0ce;font-weight:bold;font-size:8pt;">
+    <td width=5% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">NO</td>
+    <td width=45% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">PRODUK</td>
+    <td width=10% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">KWT</td>
+    <td width=10% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">SATUAN</td>
+    <td width=15% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">HARGA BELI</td>
+    <td width=15% align="center" style="border-top:1px solid black;border-bottom:1px solid black;">JUMLAH</td>
+  </tr>
+  {ITEMS}
+  <tr>
+    <td colspan="5" align="right" style="border-top:1px solid black;"><b>TOTAL</b></td>
+    <td align="right" style="border-top:1px solid black;"><b>{TOTAL}</b></td>
+  </tr>
+</table>
+

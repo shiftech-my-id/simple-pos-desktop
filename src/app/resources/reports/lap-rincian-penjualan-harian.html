@@ -1,0 +1,36 @@
+<p align=center>
+  <b>LAPORAN RINCIAN PENJUALAN HARIAN</b>
+  <br/><b>{STORE_NAME}</b>
+  <br/>Tanggal: {DATE}
+</p>
+<style>
+table {
+  border-collapse: collapse;
+}
+td, tfoot th {
+  border-top:1px solid black;
+}
+</style>
+<table width=100% align=center cellspacing=0 cellpadding=2>
+<thead>
+  <tr style="background:#0ce;font-weight:bold;font-size:8pt;">
+    <th width="5%" align="center">NO</th>
+    <th align="center">RINCIAN</th>
+    <th width="13%" align="center">TOTAL (Rp.)</th>
+    <th width="13%" align="center">DISKON (Rp.)</th>
+    <th width="13%" align="center">LABA (Rp.)</th>
+  </tr>
+</thead>
+<tbody>
+  {ITEMS}
+</tbody>
+<tfoot>
+  <tr style="background:#0ce;font-weight:bold;font-size:8pt;">
+    <th colspan="2" align="right">TOTAL</th>
+    <th align="right">{TOTAL_SALES}</th>
+    <th align="right">{TOTAL_DISCOUNT}</th>
+    <th align="right">{TOTAL_PROFIT}</th>
+  </tr>
+</tfoot>
+</table>
+

@@ -1,0 +1,32 @@
+<style>p {margin:0;text-align:center;}</style>
+<p>
+FAKTUR PENJUALAN<br>
+{STORE_NAME}<br>
+{STORE_ADDRESS}
+</p>
+<p>
+Nota #{ORDER_ID} | {ORDER_DATE}
+</p>
+<hr>
+<table width=100% align=center border=0 cellspacing=0 cellpadding=2>
+  {ITEMS}
+  <tr>
+    <td colspan="3" align="right" style="border-top:1px solid black;">TOTAL</td>
+    <td align="right" style="border-top:1px solid black;">{TOTAL}</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="right" style="border-top:1px solid black;">DISKON</td>
+    <td align="right" style="border-top:1px solid black;">{DISCOUNT}</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="right" style="border-top:1px solid black;">TUNAI</td>
+    <td align="right" style="border-top:1px solid black;">{TOTAL_PAID}</td>
+  </tr>
+  <tr>
+    <td colspan="3" align="right" style="border-top:1px solid black;">KEMBALI</td>
+    <td align="right" style="border-top:1px solid black;">{CASH_CHANGE}</td>
+  </tr>
+</table>
+<hr>
+<p>Terima kasih</p>
+

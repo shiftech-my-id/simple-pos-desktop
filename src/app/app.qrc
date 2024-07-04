@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="sync">resources/icons/baseline_sync_black_24dp.png</file>
+        <file alias="delete_forever">resources/icons/baseline_delete_forever_black_24dp.png</file>
+        <file alias="add">resources/icons/baseline_add_black_24dp.png</file>
+        <file alias="sell">resources/icons/baseline_sell_black_24dp.png</file>
+        <file alias="people">resources/icons/baseline_people_black_24dp.png</file>
+        <file alias="done">resources/icons/baseline_done_black_24dp.png</file>
+        <file alias="clear">resources/icons/baseline_clear_black_24dp.png</file>
+        <file alias="inventory">resources/icons/baseline_inventory_black_24dp.png</file>
+        <file alias="print">resources/icons/outline_print_black_24dp.png</file>
+        <file alias="save">resources/icons/outline_save_black_24dp.png</file>
+    </qresource>
+</RCC>

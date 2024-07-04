@@ -1,0 +1,27 @@
+QWidget {
+	font-size: 10pt;
+}
+QLineEdit, QComboBox, QSpinBox, QDateEdit, QDateTimeEdit {
+	padding: 3px;
+}
+QPushButton {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-weight: bold;
+	color: #222;
+}
+#SalesOrderItemEditor QComboBox,
+#SalesOrderItemEditor QLineEdit,
+#SalesOrderItemEditor QSpinBox {
+	font-size: 16pt;
+}
+
+#SalesOrderItemEditor #newProductButton {
+	font-size: 8pt;
+}
+#PaymentWidget QLineEdit {
+	font-size: 16pt;
+	padding: 3px;
+}
