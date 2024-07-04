@@ -16,7 +16,7 @@ PurchaseOrderItemEditor::PurchaseOrderItemEditor(QWidget *parent) :
     ui->setupUi(this);
 
     ui->productComboBox->setInsertPolicy(QComboBox::NoInsert);
-    ui->productComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
+    ui->productComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     ui->productComboBox->completer()->setCaseSensitivity(Qt::CaseInsensitive);
     ui->productComboBox->completer()->setFilterMode(Qt::MatchContains);
     ui->productComboBox->completer()->setCompletionMode(QCompleter::PopupCompletion);

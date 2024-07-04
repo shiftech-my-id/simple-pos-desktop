@@ -1,5 +1,6 @@
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "global.h"
 #include <QSettings>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
@@ -8,10 +9,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QSettings settings("settings.ini", QSettings::IniFormat);
+    QSettings settings(SETTINGS_PATH, QSettings::IniFormat);
     settings.beginGroup("CompanyInfo");
-    ui->storeNameEdit->setText(settings.value("store_name").toString());
-    ui->storeAddressEdit->setPlainText(settings.value("store_address").toString());
+    ui->storeNameEdit->setText(settings.value("company_name").toString());
+    ui->storeAddressEdit->setPlainText(settings.value("company_address").toString());
     settings.endGroup();
     settings.beginGroup("Print");
     ui->salesInvoicePaperSizeComboBox->setCurrentIndex(settings.value("sales_invoice_papaer_size", 0).toInt());
@@ -30,8 +31,8 @@ void SettingsDialog::accept()
 {
     QSettings settings("settings.ini", QSettings::IniFormat);
     settings.beginGroup("CompanyInfo");
-    settings.setValue("store_name", ui->storeNameEdit->text().trimmed());
-    settings.setValue("store_address", ui->storeAddressEdit->toPlainText().trimmed());
+    settings.setValue("company_name", ui->storeNameEdit->text().trimmed());
+    settings.setValue("company_address", ui->storeAddressEdit->toPlainText().trimmed());
     settings.endGroup();
     settings.beginGroup("Print");
     settings.setValue("sales_invoice_papaer_size", ui->salesInvoicePaperSizeComboBox->currentIndex());

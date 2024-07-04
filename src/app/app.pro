@@ -1,10 +1,9 @@
-QT       += core gui
-RC_FILE = app.rc
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets sql printsupport
-
+QT += core gui widgets sql printsupport
 CONFIG += c++17
-
+RC_FILE = app.rc
 SOURCES += \
+    aboutdialog.cpp \
+    calculatordialog.cpp \
     common.cpp \
     dashboard.cpp \
     datechooserdialog.cpp \
@@ -12,6 +11,7 @@ SOURCES += \
     libs/currencyedit.cpp \
     libs/numberedit.cpp \
     libs/tableview.cpp \
+    logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
     productcategoryeditor.cpp \
@@ -37,6 +37,8 @@ SOURCES += \
     settingsdialog.cpp
 
 HEADERS += \
+    aboutdialog.h \
+    calculatordialog.h \
     common.h \
     dashboard.h \
     datechooserdialog.h \
@@ -45,6 +47,7 @@ HEADERS += \
     libs/currencyedit.h \
     libs/numberedit.h \
     libs/tableview.h \
+    logindialog.h \
     mainwindow.h \
     productcategoryeditor.h \
     productcategorymanager.h \
@@ -69,8 +72,11 @@ HEADERS += \
     settingsdialog.h
 
 FORMS += \
+    aboutdialog.ui \
+    calculatordialog.ui \
     dashboard.ui \
     datechooserdialog.ui \
+    logindialog.ui \
     mainwindow.ui \
     productcategoryeditor.ui \
     productcategorymanager.ui \

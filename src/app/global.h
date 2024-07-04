@@ -12,4 +12,8 @@
 #define DB_DRIVER   "QSQLITE"
 #define DB_FILENAME "simplepos-data.sqlite3"
 
+#define SETTINGS_PATH   "settings.ini"
+#define STYLESHEET_PATH "style.css"
+#define LICENSE_PATH    "simple-pos-license.txt"
+
 #endif // GLOBAL_H

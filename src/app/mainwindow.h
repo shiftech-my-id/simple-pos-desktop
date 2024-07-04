@@ -23,12 +23,15 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
+    void showLoginDialog();
+    void showAboutDialog();
     void showSettings();
     void showProductManager();
     void showProductCategoryManager();
     void showSalesOrderManager();
     void showPurchaseOrderManager();
+    void showCalculatorDialog();
 
     void closeTab(int index);
     void printReportSalesDetailDaily(QPrinter *printer = nullptr);

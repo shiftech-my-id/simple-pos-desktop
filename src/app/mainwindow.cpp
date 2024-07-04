@@ -9,7 +9,11 @@
 #include "datechooserdialog.h"
 #include "dashboard.h"
 #include "db.h"
+#include "logindialog.h"
+#include "aboutdialog.h"
+#include "calculatordialog.h"
 
+#include <QTimer>
 #include <QPrinter>
 #include <QTabWidget>
 #include <QLabel>
@@ -64,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->reportSalesDetailDailyAction, SIGNAL(triggered()), SLOT(printReportSalesDetailDaily()));
     connect(ui->reportSalesDetailAction, SIGNAL(triggered()), SLOT(printReportSalesDetail()));
     connect(ui->reportMonthlySalesAction, SIGNAL(triggered()), SLOT(printReportMonthlySales()));
+    connect(ui->aboutAction, SIGNAL(triggered()), SLOT(showAboutDialog()));
+    connect(ui->calculatorAction, SIGNAL(triggered()), SLOT(showCalculatorDialog()));
 }
 
 MainWindow::~MainWindow()
@@ -613,4 +619,29 @@ void MainWindow::printReportMonthlySales(QPrinter *printer)
 
     printer->setDocName("Laporan Penjualan Harian" + locale().toString(date));
     doc.print(printer);
+}
+
+void MainWindow::showLoginDialog()
+{
+    hide();
+
+    LoginDialog dialog;
+    if (!dialog.exec()) {
+        QTimer::singleShot(1000, qApp, SLOT(quit()));
+        return;
+    }
+
+    show();
+}
+
+void MainWindow::showAboutDialog()
+{
+    AboutDialog dialog;
+    dialog.exec();
+}
+
+void MainWindow::showCalculatorDialog()
+{
+    CalculatorDialog dialog;
+    dialog.exec();
 }

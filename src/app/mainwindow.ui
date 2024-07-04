@@ -21,7 +21,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="reportsMenu">
@@ -36,7 +36,7 @@
     <property name="title">
      <string>&amp;Peralatan</string>
     </property>
-    <addaction name="actionKalkulator"/>
+    <addaction name="calculatorAction"/>
     <addaction name="settingsAction"/>
    </widget>
    <widget class="QMenu" name="salesMenu">
@@ -140,11 +140,7 @@
     <string>&amp;Beranda</string>
    </property>
    <property name="font">
-    <font>
-     <weight>50</weight>
-     <italic>false</italic>
-     <bold>false</bold>
-    </font>
+    <font/>
    </property>
   </action>
   <action name="action_Beranda_2">
@@ -172,7 +168,7 @@
     <string>Pelanggan</string>
    </property>
   </action>
-  <action name="actionKalkulator">
+  <action name="calculatorAction">
    <property name="text">
     <string>Kalkulator</string>
    </property>
