@@ -9,7 +9,6 @@
 #include "db.h"
 #include "mainwindow.h"
 #include "application.h"
-#include "logindialog.h"
 
 int main(int argc, char *argv[])
 {
@@ -40,7 +39,7 @@ int main(int argc, char *argv[])
     db::init();
 
     // KOMENTARI BARIS DIBAWAH INI
-    //db::resetData();
+    db::resetData();
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();

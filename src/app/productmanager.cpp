@@ -42,9 +42,8 @@ ProductManager::ProductManager(QWidget *parent) :
     ui->typeComboBox->setCurrentIndex(0);
 
     connect(ui->view, SIGNAL(activated(QModelIndex)), SLOT(edit()));
-    connect(ui->searchEdit, SIGNAL(editingFinished()), SLOT(filter()));
-    connect(ui->view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-            SLOT(updateButtonState()));
+    connect(ui->searchEdit, &QLineEdit::textEdited, this, &ProductManager::filter);
+    connect(ui->view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(updateButtonState()));
     connect(ui->showInactiveCheckBox, &QCheckBox::stateChanged, this, &ProductManager::filter);
     connect(ui->typeComboBox, &QComboBox::currentTextChanged, this, &ProductManager::filter);
 
@@ -112,11 +111,12 @@ void ProductManager::filter()
     proxyModel->showInactive = ui->showInactiveCheckBox->isChecked();
     proxyModel->type = ui->typeComboBox->currentData().toInt();
     proxyModel->invalidate();
-    ui->infoLabel->setText(QString("Menampilkan %1 produk dari total %2 produk.")
-                           .arg(locale().toString(proxyModel->rowCount()))
-                           .arg(locale().toString(model->rowCount())));
+    ui->infoLabel->setText(QString("Menampilkan %1 produk dari total %2 produk.").arg(
+        locale().toString(proxyModel->rowCount()),
+        locale().toString(model->rowCount())
+    ));
     updateButtonState();
-    ui->view->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->view->horizontalHeader()->setSectionResizeMode(ui->view->horizontalHeader()->count() - 1, QHeaderView::Stretch);
 }
 
 Product ProductManager::currentItem() const

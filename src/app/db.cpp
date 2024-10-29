@@ -1,8 +1,8 @@
 #include "db.h"
 #include "global.h"
+#include "common.h"
 #include <QMessageBox>
 #include <QSqlError>
-#include <QCryptographicHash>
 #include <QVariant>
 #include <random>
 
@@ -55,6 +55,7 @@ void resetData()
             " id     INTEGER NOT NULL DEFAULT 0,"
             " category_id INTEGER DEFAULT NULL,"
             " name   TEXT NOT NULL DEFAULT '',"
+            " description TEXT NOT NULL DEFAULT '',"
             " barcode TEXT NOT NULL DEFAULT '',"
             " uom    TEXT NOT NULL DEFAULT '',"
             " type   INTEGER NOT NULL DEFAULT 0,"
@@ -105,7 +106,7 @@ void resetData()
        q.prepare("insert into users ( username, password, active) "
                  "values(:username,:password,:active)");
        q.bindValue(":username", "admin");
-       q.bindValue(":password", QCryptographicHash::hash("12345", QCryptographicHash::Sha1).toHex());
+       q.bindValue(":password", encryptPassword("12345"));
        q.bindValue(":active", true);
        DB_EXEC(q);
 
@@ -113,7 +114,7 @@ void resetData()
            q.prepare("insert into users ( username, password, active) "
                      "values(:username,:password,:active)");
            q.bindValue(":username", "user" + QString::number(i));
-           q.bindValue(":password", QCryptographicHash::hash("12345", QCryptographicHash::Sha1).toHex());
+           q.bindValue(":password", encryptPassword("12345"));
            q.bindValue(":active", true);
            DB_EXEC(q);
        }

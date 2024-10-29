@@ -30,7 +30,9 @@ bool ProductProxyModel::filterAcceptsRow(int sourceRow,
     if (isAccepted && !searchText.isEmpty()
             && !(item.name.contains(searchText, Qt::CaseInsensitive)
                 ||item.uom.contains(searchText, Qt::CaseInsensitive)
-                ||item.categoryName.contains(searchText, Qt::CaseInsensitive)))
+                ||item.categoryName.contains(searchText, Qt::CaseInsensitive)
+                ||item.description.contains(searchText, Qt::CaseInsensitive)
+             ))
         isAccepted = false;
 
     if (isAccepted && (!showInactive && !item.active)) {

@@ -20,7 +20,7 @@ int ProductModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return 6;
+    return 7;
 }
 
 QVariant ProductModel::data(const QModelIndex &index, int role) const
@@ -37,6 +37,7 @@ QVariant ProductModel::data(const QModelIndex &index, int role) const
         case 3: return item.uom;
         case 4: return locale.toString(item.cost, 'f', 0);
         case 5: return locale.toString(item.price, 'f', 0);
+        case 6: return item.description;
         }
     }
     else if (role == Qt::EditRole) {
@@ -47,6 +48,7 @@ QVariant ProductModel::data(const QModelIndex &index, int role) const
         case 3: return item.uom;
         case 4: return item.cost;
         case 5: return item.price;
+        case 6: return item.description;
         }
     }
     else if (role == Qt::UserRole) {
@@ -72,12 +74,13 @@ QVariant ProductModel::headerData(int section, Qt::Orientation orientation, int 
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
-        case 0: return "Nama Produk";
+        case 0: return "Kode / Nama Produk";
         case 1: return "Kategori";
         case 2: return "Stok";
         case 3: return "Satuan";
         case 4: return "Harga Beli";
         case 5: return "Harga Jual";
+        case 6: return "Deskripsi";
         }
     }
     return QVariant();
@@ -97,6 +100,7 @@ void ProductModel::refresh()
         Item item;
         item.id = q.value("id").toInt();
         item.name = q.value("name").toString();
+        item.description = q.value("description").toString();
         item.categoryName = q.value("category_name").toString();
         item.uom = q.value("uom").toString();
         item.barcode = q.value("barcode").toString();

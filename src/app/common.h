@@ -33,6 +33,7 @@ struct Product {
     bool active;
     QString categoryName;
     QString name;
+    QString description;
     QString barcode;
     QString uom;
 

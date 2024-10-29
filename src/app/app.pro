@@ -13,7 +13,9 @@ SOURCES += \
     db.cpp \
     libs/currencyedit.cpp \
     libs/numberedit.cpp \
+    libs/tabbar.cpp \
     libs/tableview.cpp \
+    libs/tabwidget.cpp \
     logindialog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -52,7 +54,9 @@ HEADERS += \
     global.h \
     libs/currencyedit.h \
     libs/numberedit.h \
+    libs/tabbar.h \
     libs/tableview.h \
+    libs/tabwidget.h \
     logindialog.h \
     mainwindow.h \
     productcategoryeditor.h \

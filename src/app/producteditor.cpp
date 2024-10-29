@@ -48,6 +48,7 @@ void ProductEditor::edit(const Product &pItem)
 
     item = pItem;
     ui->nameEdit->setText(item.name);
+    ui->descriptionEdit->setText(item.description);
     ui->barcodeEdit->setText(item.barcode);
     ui->typeComboBox->setCurrentIndex(ui->typeComboBox->findData(item.type));
     ui->categoryComboBox->setCurrentIndex(ui->categoryComboBox->findData(item.categoryId));
@@ -62,6 +63,7 @@ void ProductEditor::edit(const Product &pItem)
 void ProductEditor::accept()
 {
     item.name = ui->nameEdit->text().trimmed();
+    item.description = ui->descriptionEdit->text().trimmed();
     item.barcode = ui->barcodeEdit->text().trimmed();
     item.uom = ui->uomComboBox->lineEdit()->text().trimmed();
     item.cost = ui->costEdit->value();
@@ -121,12 +123,13 @@ void ProductEditor::accept()
 
     if (item.id == 0) {
         q.prepare("insert into products"
-                  " ( name, barcode, uom, cost, price, type, stock, active, category_id) values"
-                  " (:name,:barcode,:uom,:cost,:price,:type,:stock,:active,:category_id)");
+                  " ( name, description, barcode, uom, cost, price, type, stock, active, category_id) values"
+                  " (:name,:description,:barcode,:uom,:cost,:price,:type,:stock,:active,:category_id)");
     }
     else {
         q.prepare("update products set"
                   " name=:name,"
+                  " description=:description,"
                   " barcode=:barcode,"
                   " uom=:uom,"
                   " cost=:cost,"
@@ -139,6 +142,7 @@ void ProductEditor::accept()
         q.bindValue(":id", item.id);
     }
     q.bindValue(":name", item.name);
+    q.bindValue(":description", item.description);
     q.bindValue(":barcode", item.barcode);
     q.bindValue(":uom", item.uom);
     q.bindValue(":cost", item.cost);
