@@ -10,7 +10,8 @@ CurrencyEdit::CurrencyEdit(QWidget *parent)
     , _format('f')
 {
     setValidator(new QRegularExpressionValidator(
-        QRegularExpression(QString("^\\d*|[1-9]\\d{0,2}(\\%1\\d{3})*(%2\\d+)?$")
+                                 //"^(?:-)?\\d*|[1-9]\\d{0,2}(\\%1\\d{3})*(%2\\d+)?$")
+        QRegularExpression(QString("^(?:-)?(?:\\d+|\\d{1,3}(?:%1\\d{3})*)(?:%2\\d+)?$")
                            .arg(locale().groupSeparator(), locale().decimalPoint())), this)
     );
 }
