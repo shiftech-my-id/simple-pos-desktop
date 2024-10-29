@@ -52,7 +52,7 @@ SupplierManager::~SupplierManager()
 void SupplierManager::add()
 {
     SupplierEditor editor(this);
-    editor.setWindowTitle("Tambah Supplier");
+    editor.setWindowTitle("Tambah Pemasok");
     if (!editor.exec())
         return;
     refresh();
@@ -98,11 +98,11 @@ void SupplierManager::remove()
         return;
     }
 
-    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman supplier yang sedang dipilih?") != QMessageBox::Yes)
+    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman yang sedang dipilih?") != QMessageBox::Yes)
         return;
 
     QSqlQuery q(db::database());
-    q.prepare("delete from parties where type=1 and id=:id");
+    q.prepare("delete from parties where id=:id");
     q.bindValue(":id", item.id);
     DB_EXEC(q);
 
@@ -120,7 +120,7 @@ void SupplierManager::filter()
     proxyModel->searchText = ui->searchEdit->text().trimmed();
     proxyModel->showInactive = ui->showInactiveCheckBox->isChecked();
     proxyModel->invalidate();
-    ui->infoLabel->setText(QString("Menampilkan %1 supplier dari total %2 supplier.").arg(
+    ui->infoLabel->setText(QString("Menampilkan %1 pemasok dari total %2 pemasok.").arg(
         locale().toString(proxyModel->rowCount()),
         locale().toString(model->rowCount())
     ));

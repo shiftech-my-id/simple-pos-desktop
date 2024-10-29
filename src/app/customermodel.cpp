@@ -65,9 +65,9 @@ QVariant CustomerModel::headerData(int section, Qt::Orientation orientation, int
 {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
         switch (section) {
-        case 0: return "Nama Customer";
+        case 0: return "Nama Pelanggan";
         case 1: return "Telepon";
-        case 2: return "Utang / Piutang";
+        case 2: return "Saldo";
         case 3: return "Alamat";
         }
     }

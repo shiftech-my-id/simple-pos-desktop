@@ -164,7 +164,7 @@ void MainWindow::showCustomerManager()
 {
     if (customerManager == nullptr) {
         customerManager = new CustomerManager(this);
-        tabWidget->addTab(customerManager, FA_ICON("fa-solid fa-box"), "Customer");
+        tabWidget->addTab(customerManager, FA_ICON("fa-solid fa-box"), "Pelanggan");
     }
     tabWidget->setCurrentWidget(customerManager);
 }
@@ -173,7 +173,7 @@ void MainWindow::showSupplierManager()
 {
     if (supplierManager == nullptr) {
         supplierManager = new SupplierManager(this);
-        tabWidget->addTab(supplierManager, FA_ICON("fa-solid fa-box"), "Supplier");
+        tabWidget->addTab(supplierManager, FA_ICON("fa-solid fa-box"), "Pemasok");
     }
     tabWidget->setCurrentWidget(supplierManager);
 }

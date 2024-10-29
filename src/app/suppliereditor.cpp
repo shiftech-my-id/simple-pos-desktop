@@ -42,7 +42,7 @@ void SupplierEditor::duplicate(const Supplier &item)
     this->item.id = 0;
     ui->nameEdit->selectAll();
     ui->nameEdit->setFocus();
-    setWindowTitle("Tambah Produk");
+    setWindowTitle("Tambah Pemasok");
 }
 
 void SupplierEditor::accept()
@@ -54,7 +54,7 @@ void SupplierEditor::accept()
     item.active = ui->activeCheckBox->isChecked();
 
     if (item.name.isEmpty()) {
-        QMessageBox::warning(this, "Peringatan", "Nama supplier harus diisi.");
+        QMessageBox::warning(this, "Peringatan", "Nama pemasok harus diisi.");
         ui->nameEdit->setFocus();
         return;
     }
@@ -72,7 +72,7 @@ void SupplierEditor::accept()
     if (!DB_EXEC(q)) return;
     q.next();
     if (q.value(0).toInt() > 0) {
-        QMessageBox::warning(this, "Peringatan", QString("Nama supplier %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.name));
+        QMessageBox::warning(this, "Peringatan", QString("Nama pemasok %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.name));
         ui->nameEdit->setFocus();
         ui->nameEdit->selectAll();
         return;

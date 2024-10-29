@@ -52,7 +52,7 @@ CustomerManager::~CustomerManager()
 void CustomerManager::add()
 {
     CustomerEditor editor(this);
-    editor.setWindowTitle("Tambah Customer");
+    editor.setWindowTitle("Tambah Pelanggan");
     if (!editor.exec())
         return;
     refresh();
@@ -98,11 +98,11 @@ void CustomerManager::remove()
         return;
     }
 
-    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman customer yang sedang dipilih?") != QMessageBox::Yes)
+    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman yang sedang dipilih?") != QMessageBox::Yes)
         return;
 
     QSqlQuery q(db::database());
-    q.prepare("delete from parties where type=1 and id=:id");
+    q.prepare("delete from parties where id=:id");
     q.bindValue(":id", item.id);
     DB_EXEC(q);
 
@@ -120,7 +120,7 @@ void CustomerManager::filter()
     proxyModel->searchText = ui->searchEdit->text().trimmed();
     proxyModel->showInactive = ui->showInactiveCheckBox->isChecked();
     proxyModel->invalidate();
-    ui->infoLabel->setText(QString("Menampilkan %1 customer dari total %2 customer.").arg(
+    ui->infoLabel->setText(QString("Menampilkan %1 pelanggan dari total %2 pelanggan.").arg(
         locale().toString(proxyModel->rowCount()),
         locale().toString(model->rowCount())
     ));

@@ -42,7 +42,7 @@ void CustomerEditor::duplicate(const Customer &item)
     this->item.id = 0;
     ui->nameEdit->selectAll();
     ui->nameEdit->setFocus();
-    setWindowTitle("Tambah Produk");
+    setWindowTitle("Tambah Pelanggan");
 }
 
 void CustomerEditor::accept()
@@ -54,7 +54,7 @@ void CustomerEditor::accept()
     item.active = ui->activeCheckBox->isChecked();
 
     if (item.name.isEmpty()) {
-        QMessageBox::warning(this, "Peringatan", "Nama Customer harus diisi.");
+        QMessageBox::warning(this, "Peringatan", "Nama pelanggan harus diisi.");
         ui->nameEdit->setFocus();
         return;
     }
@@ -72,7 +72,7 @@ void CustomerEditor::accept()
     if (!DB_EXEC(q)) return;
     q.next();
     if (q.value(0).toInt() > 0) {
-        QMessageBox::warning(this, "Peringatan", QString("Nama Customer %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.name));
+        QMessageBox::warning(this, "Peringatan", QString("Nama pelanggan %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.name));
         ui->nameEdit->setFocus();
         ui->nameEdit->selectAll();
         return;

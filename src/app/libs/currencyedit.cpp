@@ -11,8 +11,7 @@ CurrencyEdit::CurrencyEdit(QWidget *parent)
 {
     setValidator(new QRegularExpressionValidator(
                                  //"^(?:-)?\\d*|[1-9]\\d{0,2}(\\%1\\d{3})*(%2\\d+)?$")
-        QRegularExpression(QString("^(?:-)?(?:\\d+|\\d{1,3}(?:%1\\d{3})*)(?:%2\\d+)?$")
-                           .arg(locale().groupSeparator(), locale().decimalPoint())), this)
+        QRegularExpression(QString("^(?:-)?(?:\\d+|\\d{1,3}(?:%1\\d{3})*)(?:%2\\d+)?$").arg(locale().groupSeparator(), locale().decimalPoint())), this)
     );
 }
 
