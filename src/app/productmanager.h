@@ -23,6 +23,7 @@ public:
 public slots:
     void add();
     void edit();
+    void duplicate();
     void remove();
     void refresh();
     void filter();
@@ -37,6 +38,7 @@ private:
 
     QAction* refreshAction;
     QAction* addAction;
+    QAction* duplicateAction;
     QAction* deleteAction;
 };
 

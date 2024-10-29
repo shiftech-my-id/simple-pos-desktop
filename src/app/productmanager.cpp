@@ -28,11 +28,13 @@ ProductManager::ProductManager(QWidget *parent) :
 
     refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
     addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    duplicateAction = toolBar->addAction(FA_ICON("fa-solid fa-copy"), "&Duplikat");
     deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
 
     connect(refreshAction, &QAction::triggered, this, &ProductManager::refresh);
     connect(addAction, &QAction::triggered, this, &ProductManager::add);
     connect(deleteAction, &QAction::triggered, this, &ProductManager::remove);
+    connect(duplicateAction, &QAction::triggered, this, &ProductManager::duplicate);
 
     ui->typeComboBox->addItem("Semua Jenis", -1);
     QMap<Product::Type, QString>::iterator i;
@@ -75,6 +77,22 @@ void ProductManager::edit()
 
     ProductEditor editor(this);
     editor.edit(item);
+    if (!editor.exec())
+        return;
+    refresh();
+}
+
+void ProductManager::duplicate()
+{
+    Product item = currentItem();
+
+    if (item.id == 0) {
+        QMessageBox::information(this, "Informasi", "Silahkan pilih rekaman yang akan diduplikat.");
+        return;
+    }
+
+    ProductEditor editor(this);
+    editor.duplicate(item);
     if (!editor.exec())
         return;
     refresh();

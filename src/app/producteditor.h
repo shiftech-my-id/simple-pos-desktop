@@ -20,6 +20,7 @@ public:
     ~ProductEditor();
 
     void edit(const Product &item);
+    void duplicate(const Product &item);
 
     void refreshCategories();
 

@@ -57,7 +57,17 @@ void ProductEditor::edit(const Product &pItem)
     ui->stockSpinBox->setValue(item.stock);
     ui->costEdit->setValue(item.cost);
     ui->priceEdit->setValue(item.price);
+    ui->nameEdit->setFocus();
     setWindowTitle(QString("Ubah %1").arg(item.name));
+}
+
+void ProductEditor::duplicate(const Product &item)
+{
+    edit(item);
+    this->item.id = 0;
+    ui->nameEdit->selectAll();
+    ui->nameEdit->setFocus();
+    setWindowTitle("Tambah Produk");
 }
 
 void ProductEditor::accept()
