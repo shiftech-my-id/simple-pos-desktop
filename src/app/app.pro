@@ -6,6 +6,7 @@ SOURCES += \
     aboutdialog.cpp \
     application.cpp \
     calculatordialog.cpp \
+    changepassworddialog.cpp \
     common.cpp \
     dashboard.cpp \
     datechooserdialog.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     aboutdialog.h \
     application.h \
     calculatordialog.h \
+    changepassworddialog.h \
     common.h \
     dashboard.h \
     datechooserdialog.h \
@@ -77,6 +79,7 @@ HEADERS += \
 FORMS += \
     aboutdialog.ui \
     calculatordialog.ui \
+    changepassworddialog.ui \
     dashboard.ui \
     datechooserdialog.ui \
     logindialog.ui \

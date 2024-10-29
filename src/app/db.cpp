@@ -1,5 +1,5 @@
 #include "db.h"
-
+#include "global.h"
 #include <QMessageBox>
 #include <QSqlError>
 #include <QCryptographicHash>

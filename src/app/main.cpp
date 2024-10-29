@@ -45,12 +45,7 @@ int main(int argc, char *argv[])
     MainWindow mw;
     mw.updateDatabaseInfoLabel();
     // QTimer::singleShot(100, &mw, SLOT(showLoginDialog()));
-
-
-    // auto login
-    LoginDialog dialog;
-    dialog.login(1);
-    mw.show();
+    mw.autoLogin();
 
     return app.exec();
 }

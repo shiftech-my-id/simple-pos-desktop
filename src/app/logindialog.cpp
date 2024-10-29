@@ -2,12 +2,11 @@
 #include "ui_logindialog.h"
 #include "global.h"
 #include "db.h"
+#include "common.h"
 #include "application.h"
 
 #include <QSettings>
 #include <QMessageBox>
-#include <QSqlQuery>
-#include <QCryptographicHash>
 
 LoginDialog::LoginDialog(QWidget *parent)
     : QDialog(parent)
@@ -81,7 +80,7 @@ void LoginDialog::accept()
         return;
     }
 
-    if (q.value("password").toString() != QCryptographicHash::hash(password.toLocal8Bit(), QCryptographicHash::Sha1).toHex()) {
+    if (q.value("password").toString() != encryptPassword(password)) {
         ui->passwordEdit->setFocus();
         ui->passwordEdit->clear();
         QMessageBox::warning(this, "Peringatan", "Kata sandi yang anda masukkan salah.");

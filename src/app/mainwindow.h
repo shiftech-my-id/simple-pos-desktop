@@ -33,6 +33,7 @@ public slots:
     void showSalesOrderManager();
     void showPurchaseOrderManager();
     void showCalculatorDialog();
+    void showChangePasswordDialog();
 
     void closeTab(int index);
     void printReportSalesDetailDaily(QPrinter *printer = nullptr);
@@ -40,6 +41,8 @@ public slots:
     void printReportMonthlySales(QPrinter *printer = nullptr);
 
     void updateDatabaseInfoLabel();
+    void updateUsernameInfoLabel();
+    void autoLogin();
 
 private slots:
     void reloadStyleSheet();

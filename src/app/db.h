@@ -4,8 +4,6 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
-#include "common.h"
-
 namespace db {
 
 QSqlDatabase database();

@@ -5,6 +5,7 @@
 #include <QAbstractButton>
 #include <QIcon>
 #include <QMap>
+#include <QCryptographicHash>
 
 QList<Product::Type> Product::types = {
     Product::NonStocked, Product::Stocked, Product::Service
@@ -33,4 +34,9 @@ int msgBoxQuestion(QWidget* parent, const QString &title, const QString &text) {
     noButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
 
     return msgBox.exec();
+}
+
+QString encryptPassword(const QString& pass)
+{
+    return QCryptographicHash::hash(pass.toLocal8Bit(), QCryptographicHash::Sha1).toHex();
 }

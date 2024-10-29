@@ -8,10 +8,12 @@
 #include "reportdatedialog.h"
 #include "datechooserdialog.h"
 #include "dashboard.h"
+#include "global.h"
 #include "db.h"
 #include "logindialog.h"
 #include "aboutdialog.h"
 #include "calculatordialog.h"
+#include "changepassworddialog.h"
 #include "application.h"
 
 #include <QTimer>
@@ -84,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->reportMonthlySalesAction, SIGNAL(triggered()), SLOT(printReportMonthlySales()));
     connect(ui->aboutAction, SIGNAL(triggered()), SLOT(showAboutDialog()));
     connect(ui->calculatorAction, SIGNAL(triggered()), SLOT(showCalculatorDialog()));
+    connect(usernameLabel, &QLabel::linkActivated, this, &MainWindow::showChangePasswordDialog);
 }
 
 MainWindow::~MainWindow()
@@ -100,7 +103,20 @@ void MainWindow::updateDatabaseInfoLabel()
     else {
         databaseInfoLabel->setText(QString("%1:%2:%3").arg(db.hostName(), QString::number(db.port()), db.databaseName()));
     }
+}
 
+void MainWindow::updateUsernameInfoLabel()
+{
+    QVariantMap user = qApp->property("current_user").toMap();
+    usernameLabel->setText(QString("<a href=\"#\">%1</a>").arg(user.value("username").toString()));
+}
+
+void MainWindow::autoLogin()
+{
+    LoginDialog dialog;
+    dialog.login(1);
+    updateUsernameInfoLabel();
+    show();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -112,6 +128,12 @@ void MainWindow::closeEvent(QCloseEvent* event)
     }
 
     showLoginDialog();
+}
+
+void MainWindow::showChangePasswordDialog()
+{
+    ChangePasswordDialog dialog;
+    dialog.exec();
 }
 
 void MainWindow::showProductCategoryManager()
@@ -671,8 +693,7 @@ void MainWindow::showLoginDialog()
         return;
     }
 
-    QVariantMap user = qApp->property("current_user").toMap();
-    usernameLabel->setText(user.value("username").toString());
+    updateUsernameInfoLabel();
 
     show();
 }
