@@ -54,11 +54,11 @@ void ChangePasswordDialog::accept()
         return;
     }
 
-    QVariantMap user = qApp->property("current_user").toMap();
+    User* user = qApp->currentUser();
 
     QSqlQuery q(db::database());
     q.prepare("select password from users where id=:id");
-    q.bindValue(":id", user.value("id"));
+    q.bindValue(":id", user->id);
     DB_EXEC(q);
 
     if (!q.next()) {
@@ -76,7 +76,7 @@ void ChangePasswordDialog::accept()
 
     q.clear();
     q.prepare("update users set password=:password where id=:id");
-    q.bindValue(":id", user.value("id"));
+    q.bindValue(":id", user->id);
     q.bindValue(":password", encryptPassword(newPassword));
     DB_EXEC(q);
 

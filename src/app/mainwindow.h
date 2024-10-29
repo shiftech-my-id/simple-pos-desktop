@@ -12,9 +12,9 @@ class MainWindow;
 }
 
 class ProductManager;
-class ProductCategoryManager;
 class SalesOrderManager;
 class PurchaseOrderManager;
+class UserManager;
 
 class MainWindow : public QMainWindow
 {
@@ -28,6 +28,7 @@ public slots:
     void showLoginDialog();
     void showAboutDialog();
     void showSettings();
+    void showUserManager();
     void showProductManager();
     void showProductCategoryManager();
     void showSalesOrderManager();
@@ -54,8 +55,8 @@ private:
     Ui::MainWindow *ui;
     QTabWidget *tabWidget;
     QWidget* dashboard;
+    UserManager *userManager;
     ProductManager *productManager;
-    ProductCategoryManager *productCategoryManager;
     SalesOrderManager *salesOrderManager;
     PurchaseOrderManager *purchaseOrderManager;
     QLabel* usernameLabel;

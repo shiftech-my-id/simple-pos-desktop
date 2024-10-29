@@ -99,8 +99,12 @@ void LoginDialog::login(int id)
     DB_EXEC(q);
     q.next();
 
-    QVariantMap user;
-    user["id"] = q.value("id");
-    user["username"] = q.value("username");
-    qApp->setProperty("current_user", user);
+    User* user = new User;
+    user->id = q.value("id").toInt();
+    user->username = q.value("username").toString();
+    user->fullName = q.value("fullname").toString();
+    user->active = q.value("active").toBool();
+    user->role = q.value("role").toInt();
+    qApp->setCurrentUser(user);
+
 }

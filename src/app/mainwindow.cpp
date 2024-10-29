@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "usermanager.h"
 #include "productmanager.h"
 #include "salesordermanager.h"
 #include "purchaseordermanager.h"
@@ -40,8 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     tabWidget(new QTabWidget(this)),
     dashboard(new Dashboard(this)),
+    userManager(nullptr),
     productManager(nullptr),
-    productCategoryManager(nullptr),
     salesOrderManager(nullptr),
     purchaseOrderManager(nullptr),
     usernameLabel(new QLabel(this)),
@@ -76,8 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
     addAction(reloadStyleSheetAction);
 
     connect(reloadStyleSheetAction, &QAction::triggered, this, &MainWindow::reloadStyleSheet);
-
     connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
+    connect(ui->manageUsersAction, &QAction::triggered, this, &MainWindow::showUserManager);
     connect(ui->productAction, &QAction::triggered, this, &MainWindow::showProductManager);
     connect(ui->productCategoryAction, &QAction::triggered, this, &MainWindow::showProductCategoryManager);
     connect(ui->salesAction, &QAction::triggered, this, &MainWindow::showSalesOrderManager);
@@ -107,10 +108,17 @@ void MainWindow::updateDatabaseInfoLabel()
     }
 }
 
+void MainWindow::showUserManager()
+{
+    UserManager manager(this);
+    manager.exec();
+}
+
 void MainWindow::updateUsernameInfoLabel()
 {
-    QVariantMap user = qApp->property("current_user").toMap();
-    usernameLabel->setText(QString("<a href=\"#\">%1</a>").arg(user.value("username").toString()));
+    User* user = qApp->currentUser();
+    const QString username = user ? user->username : "";
+    usernameLabel->setText(QString("<a href=\"#\">%1</a>").arg(username));
 }
 
 void MainWindow::autoLogin()
@@ -140,11 +148,8 @@ void MainWindow::showChangePasswordDialog()
 
 void MainWindow::showProductCategoryManager()
 {
-    if (productCategoryManager == nullptr) {
-        productCategoryManager = new ProductCategoryManager(this);
-        tabWidget->addTab(productCategoryManager, FA_ICON("fa-solid fa-boxes"), "Kategori Produk");
-    }
-    tabWidget->setCurrentWidget(productCategoryManager);
+    ProductCategoryManager manager;
+    manager.exec();
 }
 
 void MainWindow::showProductManager()
@@ -197,9 +202,6 @@ void MainWindow::closeTab(int index)
 
     if (w == productManager) {
         productManager = nullptr;
-    }
-    else if (w == productCategoryManager) {
-        productCategoryManager = nullptr;
     }
     else if (w == purchaseOrderManager) {
         purchaseOrderManager = nullptr;
@@ -694,6 +696,11 @@ void MainWindow::showLoginDialog()
         QTimer::singleShot(1000, qApp, SLOT(quit()));
         return;
     }
+
+    // apply access role to menus
+    User* currentUser = qApp->currentUser();
+    ui->manageUsersAction->setEnabled(currentUser->role == User::Administrator);
+    ui->settingsAction->setEnabled(currentUser->role == User::Administrator);
 
     updateUsernameInfoLabel();
 

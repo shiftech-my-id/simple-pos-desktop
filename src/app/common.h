@@ -9,6 +9,27 @@ int msgBoxQuestion(QWidget* parent, const QString &title, const QString &text);
 
 QString encryptPassword(const QString& pass);
 
+struct User {
+    enum Role {
+        NoRole = 0,
+        Administrator = 1,
+        StandardUser= 2,
+    };
+
+    int id;
+    int role;
+    bool active;
+    QString username;
+    QString fullName;
+    QString password;
+
+    User() : id(0), role(0), active(true) {}
+
+    static QList<User::Role> roles;
+    static QMap<User::Role, QString> roleNames;
+
+};
+
 struct ProductCategory
 {
     int id;
@@ -100,6 +121,7 @@ struct StockUpdateDetail
     StockUpdateDetail() : id(0), productId(0), quantity(0), cost(0.), price(0.), subtotalCost(0.), subtotalPrice(0.) {}
 };
 
+typedef QList<User> Users;
 typedef QList<ProductCategory> ProductCategories;
 typedef QList<Product> Products;
 typedef QList<StockUpdate> SalesOrders;

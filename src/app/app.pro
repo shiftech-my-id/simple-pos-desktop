@@ -40,7 +40,11 @@ SOURCES += \
     salesordermanager.cpp \
     salesordermodel.cpp \
     salesorderproxymodel.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    usereditor.cpp \
+    usermanager.cpp \
+    usermodel.cpp \
+    userproxymodel.cpp
 
 HEADERS += \
     aboutdialog.h \
@@ -80,7 +84,11 @@ HEADERS += \
     salesordermanager.h \
     salesordermodel.h \
     salesorderproxymodel.h \
-    settingsdialog.h
+    settingsdialog.h \
+    usereditor.h \
+    usermanager.h \
+    usermodel.h \
+    userproxymodel.h
 
 FORMS += \
     aboutdialog.ui \
@@ -101,7 +109,9 @@ FORMS += \
     salesordereditor.ui \
     salesorderitemeditor.ui \
     salesordermanager.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    usereditor.ui \
+    usermanager.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

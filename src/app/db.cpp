@@ -34,9 +34,11 @@ void resetData()
 
     DB_EXEC("CREATE TABLE users ("
             " id     INTEGER NOT NULL DEFAULT 0,"
-            " username TEXT NOT NULL DEFAULT 0,"
+            " username TEXT NOT NULL DEFAULT '',"
+            " fullname TEXT NOT NULL DEFAULT '',"
             " password TEXT NOT NULL DEFAULT '',"
             " active INT NOT NULL DEFAULT 0,"
+            " role INT NOT NULL DEFAULT 0,"
             " PRIMARY KEY(id AUTOINCREMENT)"
             ")");
     DB_EXEC("CREATE TABLE parties ("
@@ -103,19 +105,23 @@ void resetData()
        QSqlQuery q(db);
        db.transaction();
 
-       q.prepare("insert into users ( username, password, active) "
-                 "values(:username,:password,:active)");
+       q.prepare("insert into users ( username, fullname, role, password, active) "
+                 "values(:username,:fullname,:role,:password,:active)");
        q.bindValue(":username", "admin");
+       q.bindValue(":fullname", "Administrator");
        q.bindValue(":password", encryptPassword("12345"));
        q.bindValue(":active", true);
+       q.bindValue(":role", 1);
        DB_EXEC(q);
 
        for (int i = 1; i <= 10; i++) {
-           q.prepare("insert into users ( username, password, active) "
-                     "values(:username,:password,:active)");
+           q.prepare("insert into users ( username, fullname, role, password, active) "
+                     "values(:username,:fullname,:role,:password,:active)");
            q.bindValue(":username", "user" + QString::number(i));
+           q.bindValue(":fullname", "User " + QString::number(i));
            q.bindValue(":password", encryptPassword("12345"));
            q.bindValue(":active", true);
+           q.bindValue(":role", 2);
            DB_EXEC(q);
        }
 

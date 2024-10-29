@@ -43,14 +43,15 @@
    </widget>
    <widget class="QMenu" name="settingsMenu">
     <property name="title">
-     <string>&amp;Peralatan</string>
+     <string>Per&amp;alatan</string>
     </property>
     <addaction name="calculatorAction"/>
     <addaction name="settingsAction"/>
+    <addaction name="manageUsersAction"/>
    </widget>
    <widget class="QMenu" name="salesMenu">
     <property name="title">
-     <string>&amp;Penjualan</string>
+     <string>Pen&amp;jualan</string>
     </property>
     <addaction name="salesAction"/>
     <addaction name="salesReturnAction"/>
@@ -59,7 +60,7 @@
    </widget>
    <widget class="QMenu" name="purchasingMenu">
     <property name="title">
-     <string>&amp;Pembelian</string>
+     <string>Pem&amp;belian</string>
     </property>
     <addaction name="purchasingAction"/>
     <addaction name="purchasingReturnAction"/>
@@ -94,7 +95,7 @@
   </widget>
   <action name="settingsAction">
    <property name="text">
-    <string>&amp;Pengaturan</string>
+    <string>Peng&amp;aturan</string>
    </property>
   </action>
   <action name="reportSalesDetailDailyAction">
@@ -114,7 +115,7 @@
   </action>
   <action name="salesAction">
    <property name="text">
-    <string>&amp;Penjualan</string>
+    <string>Pen&amp;jualan</string>
    </property>
   </action>
   <action name="salesReturnAction">
@@ -162,7 +163,7 @@
   </action>
   <action name="purchasingAction">
    <property name="text">
-    <string>&amp;Pembelian</string>
+    <string>Pem&amp;belian</string>
    </property>
   </action>
   <action name="purchasingReturnAction">
@@ -182,12 +183,17 @@
   </action>
   <action name="calculatorAction">
    <property name="text">
-    <string>Kalkulator</string>
+    <string>&amp;Kalkulator</string>
    </property>
   </action>
   <action name="action_Printer">
    <property name="text">
     <string>Pengaturan &amp;Printer</string>
+   </property>
+  </action>
+  <action name="manageUsersAction">
+   <property name="text">
+    <string>Kelola &amp;Pengguna</string>
    </property>
   </action>
  </widget>

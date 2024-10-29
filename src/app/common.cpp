@@ -7,6 +7,17 @@
 #include <QMap>
 #include <QCryptographicHash>
 
+QList<User::Role> User::roles = {
+    User::NoRole, User::Administrator, User::StandardUser
+};
+
+QMap<User::Role, QString> User::roleNames = {
+    {User::NoRole, "Tidak Ada"},
+    {User::Administrator, "Administrator"},
+    {User::StandardUser, "Pengguna Biasa"},
+};
+
+
 QList<Product::Type> Product::types = {
     Product::NonStocked, Product::Stocked, Product::Service
 };

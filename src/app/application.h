@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QtAwesome.h>
 
+class User;
+class UserModel;
 class ProductModel;
 class ProductCategoryModel;
 
@@ -16,13 +18,19 @@ public:
 
     void initProductModel();
 
+    void setCurrentUser(User* user);
+    inline User* currentUser() const { return _currentUser; }
+
     ProductModel* productModel();
     ProductCategoryModel* productCategoryModel();
+    UserModel* userModel();
 
     inline fa::QtAwesome* qtAwesome() const { return _qtAwesome; }
 
 private:
     fa::QtAwesome* _qtAwesome;
+    User* _currentUser;
+    UserModel* _userModel;
     ProductModel *_productModel;
     ProductCategoryModel *_productCategoryModel;
 };
