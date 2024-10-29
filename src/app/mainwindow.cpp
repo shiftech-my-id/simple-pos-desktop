@@ -51,7 +51,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tabWidget->setTabsClosable(true);
     tabWidget->addTab(dashboard, FA_ICON("fa-solid fa-dashboard"), "Dasbor");
+    tabWidget->setIconSize(QSize(APP_TOOLBAR_ICON_SIZE, APP_TOOLBAR_ICON_SIZE));
     setCentralWidget(tabWidget);
+
     QTabBar * tabBar = tabWidget->tabBar();
     tabBar->tabButton(0, QTabBar::RightSide)->deleteLater();
     tabBar->setTabButton(0, QTabBar::RightSide, nullptr);

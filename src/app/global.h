@@ -16,4 +16,6 @@
 #define STYLESHEET_PATH "style.css"
 #define LICENSE_PATH    "simple-pos-license.txt"
 
+#define APP_TOOLBAR_ICON_SIZE 12
+
 #endif // GLOBAL_H

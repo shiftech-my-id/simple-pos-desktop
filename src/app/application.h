@@ -6,6 +6,7 @@
 #include <QtAwesome.h>
 
 class ProductModel;
+class ProductCategoryModel;
 
 class Application : public QApplication
 {
@@ -16,12 +17,14 @@ public:
     void initProductModel();
 
     ProductModel* productModel();
+    ProductCategoryModel* productCategoryModel();
 
     inline fa::QtAwesome* qtAwesome() const { return _qtAwesome; }
 
 private:
     fa::QtAwesome* _qtAwesome;
     ProductModel *_productModel;
+    ProductCategoryModel *_productCategoryModel;
 };
 
 #if defined(qApp)

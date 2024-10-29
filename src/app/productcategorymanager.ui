@@ -29,10 +29,38 @@
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QLineEdit" name="searchEdit">
+       <property name="maximumSize">
+        <size>
+         <width>175</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="placeholderText">
+        <string>Cari kategori</string>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
     <widget class="TableView" name="tableView"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="infoLabel">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>Menampilkan 0 kategori.</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

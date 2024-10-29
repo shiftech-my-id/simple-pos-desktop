@@ -9,6 +9,7 @@ class ProductCategoryManager;
 }
 
 class ProductCategoryModel;
+class ProductCategoryProxyModel;
 
 class ProductCategoryManager : public QDialog
 {
@@ -25,10 +26,12 @@ public slots:
     void edit();
     void remove();
     void updateButtonState();
+    void filter();
 
 private:
     Ui::ProductCategoryManager *ui;
     ProductCategoryModel *model;
+    ProductCategoryProxyModel *proxyModel;
 
     QAction* refreshAction;
     QAction* addAction;

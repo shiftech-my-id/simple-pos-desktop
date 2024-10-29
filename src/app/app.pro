@@ -20,6 +20,7 @@ SOURCES += \
     productcategoryeditor.cpp \
     productcategorymanager.cpp \
     productcategorymodel.cpp \
+    productcategoryproxymodel.cpp \
     producteditor.cpp \
     productmanager.cpp \
     productmodel.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     productcategoryeditor.h \
     productcategorymanager.h \
     productcategorymodel.h \
+    productcategoryproxymodel.h \
     producteditor.h \
     productmanager.h \
     productmodel.h \

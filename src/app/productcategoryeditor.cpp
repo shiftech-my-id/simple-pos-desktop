@@ -24,7 +24,7 @@ void ProductCategoryEditor::edit(const ProductCategory &cat)
 {
     item = cat;
     ui->nameEdit->setText(item.name);
-    setWindowTitle(QString("Ubah %1").arg(item.name));
+    setWindowTitle(QString("Ubah Kategori %1").arg(item.name));
 }
 
 

@@ -5,6 +5,7 @@
 #include "application.h"
 
 #include <QMessageBox>
+#include "productcategorymodel.h"
 
 ProductEditor::ProductEditor(QWidget *parent) :
     QDialog(parent, Qt::WindowCloseButtonHint),
@@ -116,7 +117,6 @@ void ProductEditor::accept()
             return;
         }
     }
-
 
 
     if (item.id == 0) {

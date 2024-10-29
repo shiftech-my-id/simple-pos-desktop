@@ -1,4 +1,5 @@
 #include "db.h"
+#include "global.h"
 #include "productmanager.h"
 #include "ui_productmanager.h"
 #include "productmodel.h"
@@ -21,11 +22,14 @@ ProductManager::ProductManager(QWidget *parent) :
     ui->view->setModel(proxyModel);
 
     QToolBar *toolBar = new QToolBar(this);
+    toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolBar->setIconSize(QSize(APP_TOOLBAR_ICON_SIZE, APP_TOOLBAR_ICON_SIZE));
     ui->toolBarLayout->insertWidget(0, toolBar);
 
-    refreshAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/sync")), "&Refresh");
-    addAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/add")), "&Tambah");
-    deleteAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/delete_forever")), "&Hapus");
+    refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
+    addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
+
     connect(refreshAction, &QAction::triggered, this, &ProductManager::refresh);
     connect(addAction, &QAction::triggered, this, &ProductManager::add);
     connect(deleteAction, &QAction::triggered, this, &ProductManager::remove);

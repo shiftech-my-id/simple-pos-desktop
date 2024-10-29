@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     db::init();
 
     // KOMENTARI BARIS DIBAWAH INI
-    db::resetData();
+    //db::resetData();
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();
