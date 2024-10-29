@@ -37,6 +37,8 @@ ProductCategoryManager::ProductCategoryManager(QWidget *parent) :
     connect(addAction, &QAction::triggered, this, &ProductCategoryManager::add);
     connect(deleteAction, &QAction::triggered, this, &ProductCategoryManager::remove);
     connect(ui->searchEdit, &QLineEdit::textEdited, this, &ProductCategoryManager::filter);
+
+    refresh();
 }
 
 ProductCategoryManager::~ProductCategoryManager()

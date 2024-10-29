@@ -16,6 +16,8 @@
 #include "calculatordialog.h"
 #include "changepassworddialog.h"
 #include "application.h"
+// #include "customermanager.h"
+#include "suppliermanager.h"
 
 #include <QTimer>
 #include <QPrinter>
@@ -42,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent) :
     tabWidget(new QTabWidget(this)),
     dashboard(new Dashboard(this)),
     userManager(nullptr),
+    // customerManager(nullptr),
+    supplierManager(nullptr),
     productManager(nullptr),
     salesOrderManager(nullptr),
     purchaseOrderManager(nullptr),
@@ -49,6 +53,8 @@ MainWindow::MainWindow(QWidget *parent) :
     databaseInfoLabel(new QLabel(this))
 {
     ui->setupUi(this);
+
+    ui->calculatorAction->setEnabled(false);
 
     tabWidget->setTabsClosable(true);
     tabWidget->addTab(dashboard, FA_ICON("fa-solid fa-dashboard"), "Dasbor");
@@ -83,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->productCategoryAction, &QAction::triggered, this, &MainWindow::showProductCategoryManager);
     connect(ui->salesAction, &QAction::triggered, this, &MainWindow::showSalesOrderManager);
     connect(ui->purchasingAction, &QAction::triggered, this, &MainWindow::showPurchaseOrderManager);
+    connect(ui->supplierAction, &QAction::triggered, this, &MainWindow::showSupplierManager);
     connect(ui->settingsAction, &QAction::triggered, this, &MainWindow::showSettings);
     connect(ui->reportSalesDetailDailyAction, SIGNAL(triggered()), SLOT(printReportSalesDetailDaily()));
     connect(ui->reportSalesDetailAction, SIGNAL(triggered()), SLOT(printReportSalesDetail()));
@@ -152,6 +159,24 @@ void MainWindow::showProductCategoryManager()
     manager.exec();
 }
 
+void MainWindow::showCustomerManager()
+{
+    // if (customerManager == nullptr) {
+    //     customerManager = new CustomerManager(this);
+    //     tabWidget->addTab(customerManager, FA_ICON("fa-solid fa-box"), "Customer");
+    // }
+    // tabWidget->setCurrentWidget(customerManager);
+}
+
+void MainWindow::showSupplierManager()
+{
+    if (supplierManager == nullptr) {
+        supplierManager = new SupplierManager(this);
+        tabWidget->addTab(supplierManager, FA_ICON("fa-solid fa-box"), "Supplier");
+    }
+    tabWidget->setCurrentWidget(supplierManager);
+}
+
 void MainWindow::showProductManager()
 {
     if (productManager == nullptr) {
@@ -208,6 +233,9 @@ void MainWindow::closeTab(int index)
     }
     else if (w == salesOrderManager) {
         salesOrderManager = nullptr;
+    }
+    else if (w == supplierManager) {
+        supplierManager = nullptr;
     }
 }
 

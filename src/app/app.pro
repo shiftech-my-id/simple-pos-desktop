@@ -41,10 +41,14 @@ SOURCES += \
     salesordermodel.cpp \
     salesorderproxymodel.cpp \
     settingsdialog.cpp \
+    suppliereditor.cpp \
+    suppliermanager.cpp \
     usereditor.cpp \
     usermanager.cpp \
     usermodel.cpp \
-    userproxymodel.cpp
+    userproxymodel.cpp \
+    suppliermodel.cpp \
+    supplierproxymodel.cpp
 
 HEADERS += \
     aboutdialog.h \
@@ -85,10 +89,14 @@ HEADERS += \
     salesordermodel.h \
     salesorderproxymodel.h \
     settingsdialog.h \
+    suppliereditor.h \
+    suppliermanager.h \
     usereditor.h \
     usermanager.h \
     usermodel.h \
-    userproxymodel.h
+    userproxymodel.h \
+    suppliermodel.h \
+    supplierproxymodel.h
 
 FORMS += \
     aboutdialog.ui \
@@ -110,6 +118,8 @@ FORMS += \
     salesorderitemeditor.ui \
     salesordermanager.ui \
     settingsdialog.ui \
+    suppliereditor.ui \
+    suppliermanager.ui \
     usereditor.ui \
     usermanager.ui
 

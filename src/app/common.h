@@ -27,7 +27,6 @@ struct User {
 
     static QList<User::Role> roles;
     static QMap<User::Role, QString> roleNames;
-
 };
 
 struct ProductCategory
@@ -62,7 +61,35 @@ struct Product {
 
     static QList<Product::Type> types;
     static QMap<Product::Type, QString> typeNames;
+};
 
+struct Party {
+    enum Type {
+        Customer = 0,
+        Supplier = 1,
+    };
+
+    int id;
+    int type;
+    bool active;
+    double balance;
+    QString name;
+    QString address;
+    QString phone;
+
+    Party() : id(0), type(0), active(false), balance(0.) {}
+};
+
+struct Customer : public Party {
+    Customer() {
+        type = Party::Customer;
+    }
+};
+
+struct Supplier: public Party {
+    Supplier() {
+        type = Party::Supplier;
+    }
 };
 
 struct StockUpdate
@@ -128,5 +155,8 @@ typedef QList<StockUpdate> SalesOrders;
 typedef QList<StockUpdate> PurchaseOrders;
 typedef QList<StockUpdateDetail> PurchaseOrderDetails;
 typedef QList<StockUpdateDetail> SalesOrderDetails;
+typedef QList<Party> Parties;
+typedef QList<Customer> Customers;
+typedef QList<Supplier> Suppliers;
 
 #endif // COMMON_H

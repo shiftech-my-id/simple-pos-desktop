@@ -7,6 +7,7 @@
 
 class User;
 class UserModel;
+class SupplierModel;
 class ProductModel;
 class ProductCategoryModel;
 
@@ -20,7 +21,7 @@ public:
 
     void setCurrentUser(User* user);
     inline User* currentUser() const { return _currentUser; }
-
+    SupplierModel* supplierModel();
     ProductModel* productModel();
     ProductCategoryModel* productCategoryModel();
     UserModel* userModel();
@@ -31,6 +32,7 @@ private:
     fa::QtAwesome* _qtAwesome;
     User* _currentUser;
     UserModel* _userModel;
+    SupplierModel* _supplierModel;
     ProductModel *_productModel;
     ProductCategoryModel *_productCategoryModel;
 };

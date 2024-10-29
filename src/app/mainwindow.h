@@ -11,6 +11,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class CustomerManager;
+class SupplierManager;
 class ProductManager;
 class SalesOrderManager;
 class PurchaseOrderManager;
@@ -29,6 +31,8 @@ public slots:
     void showAboutDialog();
     void showSettings();
     void showUserManager();
+    void showCustomerManager();
+    void showSupplierManager();
     void showProductManager();
     void showProductCategoryManager();
     void showSalesOrderManager();
@@ -56,6 +60,8 @@ private:
     QTabWidget *tabWidget;
     QWidget* dashboard;
     UserManager *userManager;
+    SupplierManager* supplierManager;
+    CustomerManager* customerManager;
     ProductManager *productManager;
     SalesOrderManager *salesOrderManager;
     PurchaseOrderManager *purchaseOrderManager;

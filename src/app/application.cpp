@@ -2,11 +2,13 @@
 #include "productmodel.h"
 #include "productcategorymodel.h"
 #include "usermodel.h"
+#include "suppliermodel.h"
 
 Application::Application(int &argc, char **argv)
     : QApplication(argc, argv)
     , _currentUser(nullptr)
     , _userModel(nullptr)
+    , _supplierModel(nullptr)
     , _productModel(nullptr)
     , _productCategoryModel(nullptr)
 {
@@ -21,6 +23,15 @@ void Application::setCurrentUser(User* user)
     }
 
     _currentUser = user;
+}
+
+SupplierModel* Application::supplierModel()
+{
+    if (_supplierModel == nullptr) {
+        _supplierModel = new SupplierModel(this);
+    }
+
+    return _supplierModel;
 }
 
 ProductModel* Application::productModel()
