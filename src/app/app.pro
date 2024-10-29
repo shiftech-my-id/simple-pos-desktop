@@ -8,6 +8,10 @@ SOURCES += \
     calculatordialog.cpp \
     changepassworddialog.cpp \
     common.cpp \
+    customereditor.cpp \
+    customermanager.cpp \
+    customermodel.cpp \
+    customerproxymodel.cpp \
     dashboard.cpp \
     datechooserdialog.cpp \
     db.cpp \
@@ -56,6 +60,10 @@ HEADERS += \
     calculatordialog.h \
     changepassworddialog.h \
     common.h \
+    customereditor.h \
+    customermanager.h \
+    customermodel.h \
+    customerproxymodel.h \
     dashboard.h \
     datechooserdialog.h \
     db.h \
@@ -102,6 +110,8 @@ FORMS += \
     aboutdialog.ui \
     calculatordialog.ui \
     changepassworddialog.ui \
+    customereditor.ui \
+    customermanager.ui \
     dashboard.ui \
     datechooserdialog.ui \
     logindialog.ui \

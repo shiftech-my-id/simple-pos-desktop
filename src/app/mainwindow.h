@@ -60,8 +60,8 @@ private:
     QTabWidget *tabWidget;
     QWidget* dashboard;
     UserManager *userManager;
-    SupplierManager* supplierManager;
     CustomerManager* customerManager;
+    SupplierManager* supplierManager;
     ProductManager *productManager;
     SalesOrderManager *salesOrderManager;
     PurchaseOrderManager *purchaseOrderManager;

@@ -16,7 +16,7 @@
 #include "calculatordialog.h"
 #include "changepassworddialog.h"
 #include "application.h"
-// #include "customermanager.h"
+#include "customermanager.h"
 #include "suppliermanager.h"
 
 #include <QTimer>
@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tabWidget(new QTabWidget(this)),
     dashboard(new Dashboard(this)),
     userManager(nullptr),
-    // customerManager(nullptr),
+    customerManager(nullptr),
     supplierManager(nullptr),
     productManager(nullptr),
     salesOrderManager(nullptr),
@@ -88,6 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->productAction, &QAction::triggered, this, &MainWindow::showProductManager);
     connect(ui->productCategoryAction, &QAction::triggered, this, &MainWindow::showProductCategoryManager);
     connect(ui->salesAction, &QAction::triggered, this, &MainWindow::showSalesOrderManager);
+    connect(ui->customerAction, &QAction::triggered, this, &MainWindow::showCustomerManager);
     connect(ui->purchasingAction, &QAction::triggered, this, &MainWindow::showPurchaseOrderManager);
     connect(ui->supplierAction, &QAction::triggered, this, &MainWindow::showSupplierManager);
     connect(ui->settingsAction, &QAction::triggered, this, &MainWindow::showSettings);
@@ -161,11 +162,11 @@ void MainWindow::showProductCategoryManager()
 
 void MainWindow::showCustomerManager()
 {
-    // if (customerManager == nullptr) {
-    //     customerManager = new CustomerManager(this);
-    //     tabWidget->addTab(customerManager, FA_ICON("fa-solid fa-box"), "Customer");
-    // }
-    // tabWidget->setCurrentWidget(customerManager);
+    if (customerManager == nullptr) {
+        customerManager = new CustomerManager(this);
+        tabWidget->addTab(customerManager, FA_ICON("fa-solid fa-box"), "Customer");
+    }
+    tabWidget->setCurrentWidget(customerManager);
 }
 
 void MainWindow::showSupplierManager()
