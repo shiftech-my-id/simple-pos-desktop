@@ -4,6 +4,8 @@
 #include "purchaseordermodel.h"
 #include "purchaseorderproxymodel.h"
 #include "db.h"
+#include "global.h"
+#include "application.h"
 #include <QMessageBox>
 #include <QToolBar>
 #include <QIcon>
@@ -20,11 +22,13 @@ PurchaseOrderManager::PurchaseOrderManager(QWidget *parent) :
     ui->view->setModel(proxyModel);
 
     QToolBar *toolBar = new QToolBar(this);
+    toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolBar->setIconSize(QSize(APP_TOOLBAR_ICON_SIZE, APP_TOOLBAR_ICON_SIZE));
     ui->toolBarLayout->insertWidget(0, toolBar);
 
-    refreshAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/sync")), "&Refresh");
-    addAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/add")), "&Tambah");
-    deleteAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/delete_forever")), "&Hapus");
+    refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
+    addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
     connect(refreshAction, &QAction::triggered, this, &PurchaseOrderManager::refresh);
     connect(addAction, &QAction::triggered, this, &PurchaseOrderManager::add);
     connect(deleteAction, &QAction::triggered, this, &PurchaseOrderManager::remove);
