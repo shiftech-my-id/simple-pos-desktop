@@ -2,6 +2,7 @@
 #include "ui_logindialog.h"
 #include "global.h"
 #include "db.h"
+#include "application.h"
 
 #include <QSettings>
 #include <QMessageBox>
@@ -34,6 +35,9 @@ LoginDialog::LoginDialog(QWidget *parent)
     connect(ui->okButton, SIGNAL(clicked()), this, SLOT(accept()));
     connect(ui->cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
+    ui->okButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-check"));
+    ui->cancelButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
+
     adjustSize();
     setFixedSize(size());
 }
@@ -65,6 +69,18 @@ void LoginDialog::accept()
         return;
     }
 
+    if (password.isEmpty()) {
+        ui->passwordEdit->setFocus();
+        QMessageBox::warning(this, "Peringatan", "Kata sandi harus diisi.");
+        return;
+    }
+
+    if (!q.value("active").toBool()) {
+        ui->usernameEdit->setFocus();
+        QMessageBox::warning(this, "Peringatan", "Akun anda tidak aktif, silahkan hubungi administrator.");
+        return;
+    }
+
     if (q.value("password").toString() != QCryptographicHash::hash(password.toLocal8Bit(), QCryptographicHash::Sha1).toHex()) {
         ui->passwordEdit->setFocus();
         ui->passwordEdit->clear();
@@ -72,11 +88,20 @@ void LoginDialog::accept()
         return;
     }
 
-    if (password.isEmpty()) {
-        ui->passwordEdit->setFocus();
-        QMessageBox::warning(this, "Peringatan", "Kata sandi harus diisi.");
-        return;
-    }
-
+    login(q.value("id").toInt());
     QDialog::accept();
+}
+
+void LoginDialog::login(int id)
+{
+    QSqlQuery q(QSqlDatabase::database());
+    q.prepare("select * from users where id=:id");
+    q.bindValue(":id", id);
+    DB_EXEC(q);
+    q.next();
+
+    QVariantMap user;
+    user["id"] = q.value("id");
+    user["username"] = q.value("username");
+    qApp->setProperty("current_user", user);
 }

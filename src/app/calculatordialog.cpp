@@ -26,18 +26,11 @@ CalculatorDialog::CalculatorDialog(QWidget *parent)
     connect(ui->nineButton, SIGNAL(clicked()), SLOT(onNineButtonClicked()));
     connect(ui->decimalSeparatorButton, SIGNAL(clicked()), SLOT(onDecimalSeparatorButtonClicked()));
     connect(ui->equalButton, SIGNAL(clicked()), SLOT(onEqualButtonClicked()));
-    connect(ui->currentTextLabel, SIGNAL(textChanged()), SLOT(onInputChanged()));
 }
 
 CalculatorDialog::~CalculatorDialog()
 {
     delete ui;
-}
-
-void CalculatorDialog::onInputChanged()
-{
-    QString currentInput = ui->currentTextLabel->text();
-    qDebug() << "input changed" << currentInput;
 }
 
 void CalculatorDialog::processText()

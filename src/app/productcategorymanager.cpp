@@ -3,6 +3,8 @@
 #include "productcategoryeditor.h"
 #include "productcategorymodel.h"
 #include "db.h"
+#include "application.h"
+
 #include <QMessageBox>
 #include <QToolBar>
 
@@ -17,11 +19,13 @@ ProductCategoryManager::ProductCategoryManager(QWidget *parent) :
     ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 
     QToolBar *toolBar = new QToolBar(this);
+    toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    toolBar->setIconSize(QSize(16, 16));
     ui->toolBarLayout->insertWidget(0, toolBar);
 
-    refreshAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/sync")), "&Refresh");
-    addAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/add")), "&Tambah");
-    deleteAction = toolBar->addAction(QIcon(QString::fromUtf8(":/icons/delete_forever")), "&Hapus");
+    refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
+    addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
 
     connect(ui->tableView, SIGNAL(activated(QModelIndex)), SLOT(edit()));
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),

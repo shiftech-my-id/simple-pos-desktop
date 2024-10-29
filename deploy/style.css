@@ -1,0 +1,37 @@
+QStatusBar QLabel {
+	background: #fff;
+	color: #444;
+	padding: 5px;
+}
+QMenuBar {
+	background: #e5e5e5;
+}
+
+QLineEdit, QComboBox, QSpinBox {
+	height: 23px;
+	padding: 3px;
+}
+
+QPushButton {
+	padding: 7px 20px;
+	line-height: 1em;
+}
+
+QTabBar::tab {
+    icon-size: 8px;  
+}
+
+#LoginDialog #headerFrame {
+	background: #f5f5f5;
+	border-bottom:1px solid #ddd;
+}
+#LoginDialog #contentFrame {
+	background: #fff;
+}
+#LoginDialog #footerFrame {
+	border-top:1px solid #ddd;
+	background: #f5f5f5;
+}
+#LoginDialog #appInfoLabel {
+	color: #888;	
+}

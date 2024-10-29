@@ -118,7 +118,7 @@ void resetData()
            DB_EXEC(q);
        }
 
-       for (int i = 1; i <= 5000; i++) {
+       for (int i = 1; i <= 10000; i++) {
            QString name = QString("Produk %1").arg(i);
            int cost = costdist(generator) * 100;
            q.prepare("insert into products"

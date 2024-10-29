@@ -4,6 +4,7 @@
 #include "productmodel.h"
 #include "productproxymodel.h"
 #include "producteditor.h"
+#include "application.h"
 
 #include <QSqlQuery>
 #include <QMessageBox>
@@ -12,7 +13,7 @@
 ProductManager::ProductManager(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ProductManager),
-    model(new ProductModel(this)),
+    model(qApp->productModel()),
     proxyModel(new ProductProxyModel(this))
 {
     ui->setupUi(this);

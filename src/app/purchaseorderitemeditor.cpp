@@ -2,19 +2,22 @@
 #include "ui_purchaseorderitemeditor.h"
 #include "producteditor.h"
 #include "db.h"
+// #include "application.h"
+// #include "productmodel.h"
+// #include "productproxymodel.h"
 
 #include <QAbstractItemView>
 #include <QKeyEvent>
 #include <QCompleter>
 #include <QMessageBox>
 #include <QListView>
+#include <QElapsedTimer>
 
 PurchaseOrderItemEditor::PurchaseOrderItemEditor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PurchaseOrderItemEditor)
 {
     ui->setupUi(this);
-
     ui->productComboBox->setInsertPolicy(QComboBox::NoInsert);
     ui->productComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
     ui->productComboBox->completer()->setCaseSensitivity(Qt::CaseInsensitive);
@@ -47,7 +50,7 @@ void PurchaseOrderItemEditor::refreshProducts()
     productsByIds.clear();
 
     QSqlQuery q(db::database());
-    q.prepare("select * from products order by name asc");
+    q.prepare("select * from products order by name asc limit 10000");
     DB_EXEC(q);
     while (q.next()) {
         Product product;

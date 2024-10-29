@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>Simple POS</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QStatusBar {
+  background: #fff;
+  border-top:1px solid #ddd;
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
@@ -23,6 +29,9 @@
      <width>800</width>
      <height>22</height>
     </rect>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>false</bool>
    </property>
    <widget class="QMenu" name="reportsMenu">
     <property name="title">
@@ -68,6 +77,9 @@
     <addaction name="stockHistoryAction"/>
    </widget>
    <widget class="QMenu" name="aboutMenu">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
      <string>&amp;Bantuan</string>
     </property>

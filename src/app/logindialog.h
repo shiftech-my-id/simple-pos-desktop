@@ -13,6 +13,7 @@ class LoginDialog : public QDialog
 
 public:
     explicit LoginDialog(QWidget *parent = nullptr);
+    void login(int id);
     ~LoginDialog();
 
 public slots:

@@ -1,8 +1,10 @@
 QT += core gui widgets sql printsupport
-CONFIG += c++17
+CONFIG += c++17 fontAwesomeFree
+include(../libs/QtAwesome/QtAwesome.pri)
 RC_FILE = app.rc
 SOURCES += \
     aboutdialog.cpp \
+    application.cpp \
     calculatordialog.cpp \
     common.cpp \
     dashboard.cpp \
@@ -38,6 +40,7 @@ SOURCES += \
 
 HEADERS += \
     aboutdialog.h \
+    application.h \
     calculatordialog.h \
     common.h \
     dashboard.h \

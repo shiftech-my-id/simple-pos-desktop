@@ -33,7 +33,7 @@ void ProductCategoryEditor::accept()
     item.name = ui->nameEdit->text().trimmed();
 
     if (item.name.isEmpty()) {
-        QMessageBox::warning(this, "Peringatan", "Nama produk harus diisi.");
+        QMessageBox::warning(this, "Peringatan", "Nama kategori harus diisi.");
         ui->nameEdit->setFocus();
         return;
     }

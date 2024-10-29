@@ -8,11 +8,12 @@
 #include "global.h"
 #include "db.h"
 #include "mainwindow.h"
-
+#include "application.h"
+#include "logindialog.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    Application app(argc, argv);
     app.setApplicationName(APP_NAME);
     app.setApplicationDisplayName(APP_DISPLAY_NAME);
     app.setApplicationVersion(APP_VERSION_STR);
@@ -37,12 +38,19 @@ int main(int argc, char *argv[])
     QLocale::setDefault(QLocale(QLocale::Indonesian, QLocale::Indonesia));
 
     db::init();
-    // db::resetData();
+
+    // KOMENTARI BARIS DIBAWAH INI
+    db::resetData();
 
     MainWindow mw;
-    //QTimer::singleShot(100, &mw, SLOT(showLoginDialog()));
+    mw.updateDatabaseInfoLabel();
+    // QTimer::singleShot(100, &mw, SLOT(showLoginDialog()));
+
+
+    // auto login
+    LoginDialog dialog;
+    dialog.login(1);
     mw.show();
-    mw.showCalculatorDialog();
 
     return app.exec();
 }

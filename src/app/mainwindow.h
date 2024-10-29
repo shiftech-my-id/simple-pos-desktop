@@ -5,6 +5,7 @@
 
 class QTabWidget;
 class QPrinter;
+class QLabel;
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +39,14 @@ public slots:
     void printReportSalesDetail(QPrinter *printer = nullptr);
     void printReportMonthlySales(QPrinter *printer = nullptr);
 
+    void updateDatabaseInfoLabel();
+
+private slots:
+    void reloadStyleSheet();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
     QTabWidget *tabWidget;
@@ -46,6 +55,8 @@ private:
     ProductCategoryManager *productCategoryManager;
     SalesOrderManager *salesOrderManager;
     PurchaseOrderManager *purchaseOrderManager;
+    QLabel* usernameLabel;
+    QLabel* databaseInfoLabel;
 };
 
 #endif // MAINWINDOW_H

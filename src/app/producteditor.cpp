@@ -2,6 +2,8 @@
 #include "ui_producteditor.h"
 #include "productcategoryeditor.h"
 #include "db.h"
+#include "application.h"
+
 #include <QMessageBox>
 
 ProductEditor::ProductEditor(QWidget *parent) :
@@ -26,6 +28,10 @@ ProductEditor::ProductEditor(QWidget *parent) :
     connect(ui->saveButton, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(ui->addCategoryButton, SIGNAL(clicked()), SLOT(addCategory()));
+
+    ui->saveButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-check"));
+    ui->cancelButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
+    ui->addCategoryButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-plus"));
 
     refreshCategories();
 }

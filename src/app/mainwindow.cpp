@@ -12,6 +12,7 @@
 #include "logindialog.h"
 #include "aboutdialog.h"
 #include "calculatordialog.h"
+#include "application.h"
 
 #include <QTimer>
 #include <QPrinter>
@@ -29,6 +30,8 @@
 #include <QSqlError>
 #include <QTextDocument>
 #include <QTabBar>
+#include <QMessageBox>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -38,26 +41,37 @@ MainWindow::MainWindow(QWidget *parent) :
     productManager(nullptr),
     productCategoryManager(nullptr),
     salesOrderManager(nullptr),
-    purchaseOrderManager(nullptr)
+    purchaseOrderManager(nullptr),
+    usernameLabel(new QLabel(this)),
+    databaseInfoLabel(new QLabel(this))
 {
     ui->setupUi(this);
 
     tabWidget->setTabsClosable(true);
-    tabWidget->addTab(dashboard, "Dasbor");
+    tabWidget->addTab(dashboard, FA_ICON("fa-solid fa-dashboard"), "Dasbor");
     setCentralWidget(tabWidget);
     QTabBar * tabBar = tabWidget->tabBar();
     tabBar->tabButton(0, QTabBar::RightSide)->deleteLater();
     tabBar->setTabButton(0, QTabBar::RightSide, nullptr);
 
     QLabel *label = new QLabel(this);
-    label->setText("  © Shift Komputer 2022");
+    label->setText("©Shiftech.my.id 2024");
 
     QLabel *label2 = new QLabel(this);
-    label2->setText(QString("%1 v%2 berbasis Qt %3").arg(APP_DISPLAY_NAME, APP_VERSION_STR, QT_VERSION_STR));
+    label2->setText(QString("%1 v%2").arg(APP_DISPLAY_NAME, APP_VERSION_STR));
 
-    ui->statusbar->addWidget(label, 0);
+    ui->statusbar->addWidget(usernameLabel, 0);
+    ui->statusbar->addWidget(databaseInfoLabel, 0);
+
     ui->statusbar->addWidget(new QLabel(this), 1);
+    ui->statusbar->addWidget(label, 0);
     ui->statusbar->addWidget(label2, 0);
+
+    QAction* reloadStyleSheetAction = new QAction(this);
+    reloadStyleSheetAction->setShortcut(QKeySequence("Ctrl+Shift+R"));
+    addAction(reloadStyleSheetAction);
+
+    connect(reloadStyleSheetAction, &QAction::triggered, this, &MainWindow::reloadStyleSheet);
 
     connect(tabWidget, &QTabWidget::tabCloseRequested, this, &MainWindow::closeTab);
     connect(ui->productAction, &QAction::triggered, this, &MainWindow::showProductManager);
@@ -77,11 +91,34 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateDatabaseInfoLabel()
+{
+    QSqlDatabase db = db::database();
+    if (db.driverName() == "QSQLITE") {
+        databaseInfoLabel->setText(QString("%1").arg(db.databaseName()));
+    }
+    else {
+        databaseInfoLabel->setText(QString("%1:%2:%3").arg(db.hostName(), QString::number(db.port()), db.databaseName()));
+    }
+
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    event->ignore();
+
+    if (msgBoxQuestion(this, "Konfirmasi", "Anda yakin akan keluar dari aplikasi?") == QMessageBox::No) {
+        return;
+    }
+
+    showLoginDialog();
+}
+
 void MainWindow::showProductCategoryManager()
 {
     if (productCategoryManager == nullptr) {
         productCategoryManager = new ProductCategoryManager(this);
-        tabWidget->addTab(productCategoryManager, "Kategori Produk");
+        tabWidget->addTab(productCategoryManager, FA_ICON("fa-solid fa-boxes"), "Kategori Produk");
     }
     tabWidget->setCurrentWidget(productCategoryManager);
 }
@@ -90,7 +127,7 @@ void MainWindow::showProductManager()
 {
     if (productManager == nullptr) {
         productManager = new ProductManager(this);
-        tabWidget->addTab(productManager, "Produk");
+        tabWidget->addTab(productManager, FA_ICON("fa-solid fa-box"), "Produk");
     }
     tabWidget->setCurrentWidget(productManager);
 }
@@ -625,11 +662,17 @@ void MainWindow::showLoginDialog()
 {
     hide();
 
+    // log out session
+    qApp->setProperty("current_user", QVariantMap());
+
     LoginDialog dialog;
     if (!dialog.exec()) {
         QTimer::singleShot(1000, qApp, SLOT(quit()));
         return;
     }
+
+    QVariantMap user = qApp->property("current_user").toMap();
+    usernameLabel->setText(user.value("username").toString());
 
     show();
 }
@@ -644,4 +687,12 @@ void MainWindow::showCalculatorDialog()
 {
     CalculatorDialog dialog;
     dialog.exec();
+}
+
+void MainWindow::reloadStyleSheet()
+{
+    QFile file(STYLESHEET_PATH);
+    file.open(QFile::ReadOnly | QFile::Text);
+    qApp->setStyleSheet(file.readAll());
+    QMessageBox::information(this, "Information", "Stylesheet reloaded.");
 }

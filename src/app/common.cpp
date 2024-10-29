@@ -1,4 +1,5 @@
 #include "common.h"
+#include "application.h"
 
 #include <QMessageBox>
 #include <QAbstractButton>
@@ -17,20 +18,19 @@ QMap<Product::Type, QString> Product::typeNames = {
 
 int msgBoxQuestion(QWidget* parent, const QString &title, const QString &text) {
     QMessageBox msgBox(parent);
+    msgBox.setObjectName("msgBox");
     msgBox.setIcon(QMessageBox::Question);
     msgBox.setWindowTitle(title);
     msgBox.setText(text);
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
     QAbstractButton* yesButton = msgBox.button(QMessageBox::Yes);
     yesButton->setText("&Ya");
-    QIcon yesIcon;
-    yesIcon.addFile(QString::fromUtf8(":/icons/done"), QSize(), QIcon::Normal, QIcon::Off);
-    yesButton->setIcon(yesIcon);
+    yesButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-check"));
 
     QAbstractButton* noButton = msgBox.button(QMessageBox::No);
     noButton->setText("&Tidak");
-    QIcon noIcon;
-    noIcon.addFile(QString::fromUtf8(":/icons/clear"), QSize(), QIcon::Normal, QIcon::Off);
-    noButton->setIcon(noIcon);
+    noButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
+
     return msgBox.exec();
 }
