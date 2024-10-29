@@ -78,6 +78,9 @@ void ChangePasswordDialog::accept()
     q.prepare("update users set password=:password where id=:id");
     q.bindValue(":id", user.value("id"));
     q.bindValue(":password", encryptPassword(newPassword));
+    DB_EXEC(q);
+
     QDialog::accept();
+
     QMessageBox::information(this, "Informasi", "Kata sandi berhasil diganti.");
 }
