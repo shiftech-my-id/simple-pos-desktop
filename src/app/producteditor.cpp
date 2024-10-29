@@ -3,15 +3,26 @@
 #include "productcategoryeditor.h"
 #include "db.h"
 #include "application.h"
+#include "productcategorymodel.h"
+#include "productcategoryproxymodel.h"
 
 #include <QMessageBox>
-#include "productcategorymodel.h"
+#include <QAbstractItemView>
 
 ProductEditor::ProductEditor(QWidget *parent) :
     QDialog(parent, Qt::WindowCloseButtonHint),
-    ui(new Ui::ProductEditor)
+    ui(new Ui::ProductEditor),
+    categoryModel(qApp->productCategoryModel()),
+    categoryProxyModel(new ProductCategoryProxyModel(this))
 {
     ui->setupUi(this);
+
+    categoryProxyModel->setSourceModel(categoryModel);
+    categoryProxyModel->sort(0);
+
+    ui->categoryComboBox->setModel(categoryProxyModel);
+    ui->categoryComboBox->setModelColumn(0);
+    ui->categoryComboBox->view()->setAlternatingRowColors(true);
 
     QMap<Product::Type, QString>::iterator i;
     for (i = Product::typeNames.begin(); i != Product::typeNames.end(); ++i) {
@@ -33,8 +44,6 @@ ProductEditor::ProductEditor(QWidget *parent) :
     ui->saveButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-check"));
     ui->cancelButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
     ui->addCategoryButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-plus"));
-
-    refreshCategories();
 }
 
 ProductEditor::~ProductEditor()
@@ -44,8 +53,6 @@ ProductEditor::~ProductEditor()
 
 void ProductEditor::edit(const Product &pItem)
 {
-    refreshCategories();
-
     item = pItem;
     ui->nameEdit->setText(item.name);
     ui->descriptionEdit->setText(item.description);
@@ -81,7 +88,7 @@ void ProductEditor::accept()
     item.type = ui->typeComboBox->currentData().toInt();
     item.stock = ui->stockSpinBox->value();
     item.active = ui->activeCheckBox->isChecked();
-    item.categoryId = ui->categoryComboBox->currentData().toInt();
+    item.categoryId = categoryProxyModel->index(ui->categoryComboBox->currentIndex(), 0).data(Qt::UserRole).toInt();
 
     if (item.name.isEmpty()) {
         QMessageBox::warning(this, "Peringatan", "Nama produk harus diisi.");
@@ -170,22 +177,12 @@ void ProductEditor::accept()
     QDialog::accept();
 }
 
-void ProductEditor::refreshCategories()
-{
-    ui->categoryComboBox->clear();
-    QSqlQuery q(db::database());
-    q.prepare("select id, name from product_categories order by name asc");
-    DB_EXEC(q);
-    while (q.next())
-        ui->categoryComboBox->addItem(q.value("name").toString(), q.value("id").toInt());
-    ui->categoryComboBox->setCurrentIndex(-1);
-}
-
 void ProductEditor::addCategory()
 {
     ProductCategoryEditor editor;
     if (!editor.exec())
         return;
 
-    refreshCategories();
+    const QString name = editor.name();
+    ui->categoryComboBox->setCurrentIndex(ui->categoryComboBox->findText(name));
 }

@@ -37,8 +37,6 @@ ProductCategoryManager::ProductCategoryManager(QWidget *parent) :
     connect(addAction, &QAction::triggered, this, &ProductCategoryManager::add);
     connect(deleteAction, &QAction::triggered, this, &ProductCategoryManager::remove);
     connect(ui->searchEdit, &QLineEdit::textEdited, this, &ProductCategoryManager::filter);
-
-    refresh();
 }
 
 ProductCategoryManager::~ProductCategoryManager()
@@ -52,7 +50,6 @@ void ProductCategoryManager::add()
     editor.setWindowTitle("Tambah Kategori Produk");
     if (!editor.exec())
         return;
-    refresh();
 }
 
 void ProductCategoryManager::edit()
@@ -68,7 +65,6 @@ void ProductCategoryManager::edit()
     editor.edit(item);
     if (!editor.exec())
         return;
-    refresh();
 }
 
 void ProductCategoryManager::remove()
@@ -86,8 +82,6 @@ void ProductCategoryManager::remove()
     q.prepare("delete from product_categories where id=:id");
     q.bindValue(":id", item.id);
     DB_EXEC(q);
-
-    refresh();
 }
 
 void ProductCategoryManager::refresh()

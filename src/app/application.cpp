@@ -36,6 +36,7 @@ ProductCategoryModel* Application::productCategoryModel()
 {
     if (_productCategoryModel == nullptr) {
         _productCategoryModel = new ProductCategoryModel(this);
+        _productCategoryModel->refresh();
     }
 
     return _productCategoryModel;

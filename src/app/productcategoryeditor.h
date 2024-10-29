@@ -18,6 +18,8 @@ public:
 
     void edit(const ProductCategory &cat);
 
+    QString name() const;
+
 public slots:
     void accept();
 

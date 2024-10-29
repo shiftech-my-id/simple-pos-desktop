@@ -26,6 +26,10 @@ public:
 
     void refresh();
 
+    void save(const Item& item);
+    void remove(const Item& item);
+    static bool exists(const QString& category, int id = 0);
+
 private:
 };
 

@@ -9,6 +9,9 @@ namespace Ui {
 class ProductEditor;
 }
 
+class ProductCategoryModel;
+class ProductCategoryProxyModel;
+
 class ProductEditor : public QDialog
 {
     Q_OBJECT
@@ -22,14 +25,14 @@ public:
     void edit(const Product &item);
     void duplicate(const Product &item);
 
-    void refreshCategories();
-
 public slots:
     void addCategory();
     void accept();
 
 private:
     Ui::ProductEditor *ui;
+    ProductCategoryModel *categoryModel;
+    ProductCategoryProxyModel *categoryProxyModel;
 };
 
 #endif // PRODUCTEDITOR_H

@@ -150,5 +150,6 @@ void ProductManager::updateButtonState()
 {
     bool hasSelection = ui->view->selectionModel()->hasSelection();
     deleteAction->setEnabled(hasSelection);
+    duplicateAction->setEnabled(hasSelection);
 }
 
