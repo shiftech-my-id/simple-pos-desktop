@@ -35,11 +35,13 @@ QSqlDatabase connection()
     if (!db.isValid()) {
         QSettings s(APP_SETTINGS_PATH, QSettings::IniFormat);
         db = QSqlDatabase::addDatabase(s.value(SK_DATABASE_DRIVER, APP_DEFAULT_DB_DRIVER).toString(), QSqlDatabase::defaultConnection);
-        db.setHostName(s.value(SK_DATABASE_HOSTNAME).toString());
-        db.setPort(s.value(SK_DATABASE_PORT).toInt());
         db.setDatabaseName(s.value(SK_DATABASE_DATABASENAME, APP_DEFAULT_DB_FILENAME).toString());
-        db.setUserName(s.value(SK_DATABASE_USERNAME).toString());
-        db.setPassword(s.value(SK_DATABASE_PASSWORD).toString());
+        if (db.driverName() != "QSQLITE") {
+            db.setHostName(s.value(SK_DATABASE_HOSTNAME).toString());
+            db.setPort(s.value(SK_DATABASE_PORT).toInt());
+            db.setUserName(s.value(SK_DATABASE_USERNAME).toString());
+            db.setPassword(s.value(SK_DATABASE_PASSWORD).toString());
+        }
     }
 
     db.open();

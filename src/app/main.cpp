@@ -15,7 +15,6 @@
 #include "db/db.h"
 #include "widgets/mainwindow.h"
 #include "widgets/application.h"
-// #include "gui/product/productmodel.h"
 
 static QTextStream sLogStream;
 static int sCounter = 0;
@@ -88,68 +87,48 @@ void init_applocker(QSettings &settings)
     }
 }
 
+void check_license() {
+    QFile f(APP_LICENSE_PATH);
+    if (!f.open(QFile::ReadOnly | QFile::Text)) {
+        const char * message = "Lisensi tidak ditemukan, silahkan hubungi tim Shift!";
+        qCritical() << message;
+        QMessageBox::critical(nullptr, "ERROR", message);
+        exit(1);
+    }
+
+    QByteArray data = f.readAll();
+    if (data != encryptPassword("SIMPLE_POS")) {
+        const char * message = "Lisensi tidak valid, silahkan hubungi tim Shift!";
+        qCritical() << message;
+        QMessageBox::critical(nullptr, "ERROR", message);
+        exit(1);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     Application app(argc, argv);
     app.setApplicationName(APP_NAME);
     app.setApplicationDisplayName(APP_DISPLAY_NAME);
     app.setApplicationVersion(APP_VERSION_STR);
-    app.setProperty("settings-path", qApp->applicationDirPath().append("/" APP_SETTINGS_PATH));
 
-    QFile f(APP_LICENSE_PATH);
-    if (!f.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::critical(nullptr, "ERROR", "Lisensi tidak ditemukan, silahkan hubungi tim Shift!");
-        return 1;
-    }
-
-    QByteArray data = f.readAll();
-    if (data != encryptPassword("SIMPLE_POS")) {
-        QMessageBox::critical(nullptr, "ERROR", "Lisensi tidak valid, silahkan hubungi tim Shift!");
-        return 1;
-    }
+    QSettings settings(APP_SETTINGS_PATH, QSettings::IniFormat);
+    init_logger();
+    init_locale();
+    init_applocker(settings);
+    init_stylesheet();
+    check_license();
 
     QFile file(APP_STYLESHEET_PATH);
     file.open(QFile::ReadOnly | QFile::Text);
     app.setStyleSheet(file.readAll());
 
-    QLocale::setDefault(QLocale(QLocale::Indonesian, QLocale::Indonesia));
-
-    // db::init();
-    // db::resetData();
+    db::init();
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();
-    QTimer::singleShot(100, &mw, SLOT(showLoginDialog()));
-    // mw.autoLogin();
+    // QTimer::singleShot(100, &mw, SLOT(showLoginDialog()));
+    mw.autoLogin();
 
     return app.exec();
 }
-
-// int main(int argc, char *argv[])
-// {
-//     Application app(argc, argv);
-//     app.setApplicationName(APP_NAME);
-//     app.setApplicationDisplayName(APP_DISPLAY_NAME);
-//     app.setApplicationVersion(APP_VERSION_STR);
-
-//     QSettings settings(APP_SETTINGS_PATH, QSettings::IniFormat);
-//     init_logger();
-//     init_locale();
-//     init_applocker(settings);
-//     init_stylesheet();
-
-//     qInfo() << "=====" << APP_NAME << APP_VERSION_STR << "=====";
-
-//     db::init();
-//     QSqlDatabase db = db::connection();
-//     if (!db.isOpen()) {
-//         qDebug() << db.databaseName() << db.hostName() << db.port() << db.userName() << db.password();
-//         QMessageBox::critical(nullptr, "Database Error", db.lastError().text());
-//         return 1;
-//     }
-
-//     MainWindow mw;
-//     QTimer::singleShot(0, &mw, SLOT(showMaximized()));
-
-//     return app.exec();
-// }
