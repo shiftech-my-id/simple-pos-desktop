@@ -3,6 +3,7 @@ CONFIG += c++17 fontAwesomeFree
 include(../libs/QtAwesome/QtAwesome.pri)
 RC_FILE = app.rc
 SOURCES += \
+    db/usertable.cpp \
     entity/abstractentity.cpp \
     entity/address.cpp \
     entity/customer.cpp \
@@ -74,6 +75,7 @@ SOURCES += \
 
 
 HEADERS += \
+    db/usertable.h \
     entity/abstractentity.h \
     entity/address.h \
     entity/customer.h \

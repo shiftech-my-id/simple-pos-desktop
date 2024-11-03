@@ -19,6 +19,11 @@ public:
     QString password;
 
     inline User() : id(0), role(0), active(true) {}
+
+    bool operator==(const User& o) const;
+    inline bool operator!=(const User& o) const
+    { return !operator==(o); }
+
     QVariantMap toMap() const;
     void fromMap(const QVariantMap &d);
 

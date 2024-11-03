@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include "entity/user.h"
+#include "libs/core/singleton.h"
 
 class UserModel : public QAbstractTableModel
 {
@@ -23,7 +24,10 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     void refresh();
+    bool save(const Item& item, bool changePassword);
+    bool remove(const Item& item);
 
+    SINGLETON_INSTANCE(UserModel)
 };
 
 #endif // USERMODEL_H

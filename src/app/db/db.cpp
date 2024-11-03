@@ -260,15 +260,19 @@ bool exec(const QString &str, const char* file, int line, const char *fn)
 bool exec(QSqlQuery &q, const char* file, int line, const char */*fn*/)
 {
     if (!q.exec()) {
+        const QString title("SQL Error");
+        const QString text("Terdapat kesalahan saat mengeksekusi query.");
+        const QString infoText(QString("file: %2:%3").arg(file, QString("%1").arg(line)));
+        const QString detailedText(QString("SQL: '%1'. Database error text: %2").arg(q.lastQuery(), q.lastError().text()));
+
+        qCritical() << title << text << "\nInfo:" << infoText << "\nDetail: " << detailedText;
+
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Sql Error");
-        msgBox.setText("Terdapat kesalahan saat mengeksekusi query.<br>");
-        msgBox.setInformativeText(QString("file: %2:%3<br>")
-                                  .arg(file, QString("%1").arg(line)));
-        msgBox.setDetailedText(QString("SQL: '%1'. "
-                                       "Database error text: %2")
-                               .arg(q.lastQuery(), q.lastError().text()));
+        msgBox.setWindowTitle(title);
+        msgBox.setText(text);
+        msgBox.setInformativeText(infoText);
+        msgBox.setDetailedText(detailedText);
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
 

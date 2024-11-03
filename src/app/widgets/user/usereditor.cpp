@@ -1,8 +1,9 @@
 #include "usereditor.h"
 #include "ui_usereditor.h"
 #include "db/db.h"
-#include "common.h"
+#include "db/usertable.h"
 #include "entity/product.h"
+#include "gui/usermodel.h"
 #include "widgets/application.h"
 
 #include <QMessageBox>
@@ -66,19 +67,7 @@ void UserEditor::accept()
         return;
     }
 
-    QSqlQuery q(db::database());
-    // Cek duplikat nama pengguna
-    if (item.id == 0) {
-        q.prepare("select count(0) from users where username=:username");
-    }
-    else {
-        q.prepare("select count(0) from users where username=:username and id<>:id");
-        q.bindValue(":id", item.id);
-    }
-    q.bindValue(":username", item.username);
-    if (!DB_EXEC(q)) return;
-    q.next();
-    if (q.value(0).toInt() > 0) {
+    if (db::UserTable::instance()->exists(item.username, item.id)) {
         QMessageBox::warning(this, "Peringatan", QString("Nama pengguna %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.username));
         ui->usernameEdit->setFocus();
         ui->usernameEdit->selectAll();
@@ -91,41 +80,14 @@ void UserEditor::accept()
         return;
     }
 
-    if (item.id == 0) {
-        if (item.password.isEmpty()) {
-            QMessageBox::warning(this, "Peringatan", "Kata sandi harus diisi.");
-            ui->passwordEdit->setFocus();
-            return;
-        }
-        q.prepare("insert into users"
-                  " ( username, fullname, password, role, active) values"
-                  " (:username,:fullname,:password,:role,:active)");
+    if (!item.id && item.password.isEmpty())  {
+        QMessageBox::warning(this, "Peringatan", "Password harus diisi.");
+        ui->passwordEdit->setFocus();
+        return;
     }
-    else {
-        QString sql = "update users set"
-                      " username=:username,"
-                      " fullname=:fullname,"
-                      " role=:role,"
-                      " active=:active";
-        if (!item.password.isEmpty()) {
-            sql.append(",password=:password");
-        }
-        sql.append(" where id=:id");
-        q.prepare(sql);
-        q.bindValue(":id", item.id);
-    }
-    q.bindValue(":username", item.username);
-    q.bindValue(":fullname", item.fullName);
-    q.bindValue(":role", item.role);
-    q.bindValue(":active", item.active);
-    if (!item.password.isEmpty()) {
-        q.bindValue(":password", encryptPassword(item.password));
-    }
-    DB_EXEC(q);
 
-    if (!item.id) {
-        item.id = q.lastInsertId().toInt();
-    }
+    // ganti password hanya jika diisi
+    UserModel::instance()->save(item, item.id == 0 || item.password.length() > 0);
 
     QDialog::accept();
 }

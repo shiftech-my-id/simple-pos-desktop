@@ -1,8 +1,8 @@
 #include "productcategoryeditor.h"
 #include "ui_productcategoryeditor.h"
 #include "gui/productcategorymodel.h"
-#include "db/db.h"
 #include "widgets/application.h"
+#include "db/productcategorytable.h"
 #include <QMessageBox>
 
 ProductCategoryEditor::ProductCategoryEditor(QWidget *parent) :
@@ -40,7 +40,7 @@ void ProductCategoryEditor::accept()
         return;
     }
 
-    if (ProductCategoryModel::exists(item.name, item.id)) {
+    if (db::ProductCategoryTable::instance()->exists(item.name, item.id)) {
         QMessageBox::warning(this, "Peringatan", QString("Nama kategori %1 sudah digunakan, silahkan gunakan nama lain.").arg(item.name));
         ui->nameEdit->setFocus();
         ui->nameEdit->selectAll();

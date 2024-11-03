@@ -3,7 +3,6 @@
 #include "productcategoryeditor.h"
 #include "gui/productcategorymodel.h"
 #include "gui/productcategoryproxymodel.h"
-#include "db/db.h"
 #include "global.h"
 #include "widgets/application.h"
 #include "common.h"
@@ -20,6 +19,8 @@ ProductCategoryManager::ProductCategoryManager(QWidget *parent) :
     ui->setupUi(this);
 
     proxyModel->setSourceModel(model);
+    proxyModel->sort(0);
+
     ui->tableView->setModel(proxyModel);
     ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 
@@ -30,16 +31,19 @@ ProductCategoryManager::ProductCategoryManager(QWidget *parent) :
 
     refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
     addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    duplicateAction = toolBar->addAction(FA_ICON("fa-solid fa-copy"), "&Duplikat");
     deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
 
     connect(ui->tableView, SIGNAL(activated(QModelIndex)), SLOT(edit()));
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(updateButtonState()));
     connect(refreshAction, &QAction::triggered, this, &ProductCategoryManager::refresh);
     connect(addAction, &QAction::triggered, this, &ProductCategoryManager::add);
+    connect(duplicateAction, &QAction::triggered, this, &ProductCategoryManager::duplicate);
     connect(deleteAction, &QAction::triggered, this, &ProductCategoryManager::remove);
     connect(ui->searchEdit, &QLineEdit::textEdited, this, &ProductCategoryManager::filter);
+    connect(model, &ProductCategoryModel::rowsInserted, this, &ProductCategoryManager::onCategoryInserted);
 
-    refresh();
+    filter();
 }
 
 ProductCategoryManager::~ProductCategoryManager()
@@ -66,8 +70,22 @@ void ProductCategoryManager::edit()
 
     ProductCategoryEditor editor(this);
     editor.edit(item);
-    if (!editor.exec())
+    editor.exec();
+}
+
+void ProductCategoryManager::duplicate()
+{
+    ProductCategory item = currentItem();
+    if (item.id == 0) {
+        QMessageBox::information(this, "Informasi", "Silahkan pilih rekaman yang akan di duplikat.");
         return;
+    }
+
+    item.id = 0;
+
+    ProductCategoryEditor editor(this);
+    editor.edit(item);
+    editor.exec();
 }
 
 void ProductCategoryManager::remove()
@@ -81,10 +99,15 @@ void ProductCategoryManager::remove()
     if (msgBoxQuestion(this, "Konfimasi", QString("Hapus kategori <b>%1</b>?").arg(item.name)) != QMessageBox::Yes)
         return;
 
-    QSqlQuery q(db::database());
-    q.prepare("delete from product_categories where id=:id");
-    q.bindValue(":id", item.id);
-    DB_EXEC(q);
+    model->remove(item);
+}
+
+void ProductCategoryManager::onCategoryInserted(const QModelIndex&, int row, int)
+{
+    const QModelIndex proxyIndex = proxyModel->mapFromSource(model->index(row, 0));
+    ui->tableView->setFocus();
+    ui->tableView->selectRow(proxyIndex.row());
+    ui->tableView->scrollTo(proxyIndex);
 }
 
 void ProductCategoryManager::refresh()
@@ -97,11 +120,10 @@ void ProductCategoryManager::filter()
 {
     proxyModel->searchText = ui->searchEdit->text().trimmed();
     proxyModel->invalidate();
-    ui->infoLabel->setText(QString("Menampilkan %1 kategori dari total %2 kategori.")
-                               .arg(locale().toString(proxyModel->rowCount()))
-                               .arg(locale().toString(model->rowCount())));
+    ui->infoLabel->setText(QString("Menampilkan %1 kategori dari total %2 kategori.").arg(
+        locale().toString(proxyModel->rowCount()),
+        locale().toString(model->rowCount())));
     updateButtonState();
-    ui->tableView->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 }
 
 
@@ -118,4 +140,5 @@ void ProductCategoryManager::updateButtonState()
 {
     bool hasSelection = ui->tableView->selectionModel()->hasSelection();
     deleteAction->setEnabled(hasSelection);
+    duplicateAction->setEnabled(hasSelection);
 }

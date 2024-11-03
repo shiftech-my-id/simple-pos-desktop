@@ -52,6 +52,7 @@ public slots:
 
 private slots:
     void reloadStyleSheet();
+    void onCalculatorFinished();
 
 protected:
     void closeEvent(QCloseEvent *event) override;

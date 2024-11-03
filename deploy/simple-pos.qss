@@ -32,6 +32,29 @@ QTabBar::tab {
 	border-top:1px solid #ddd;
 	background: #f5f5f5;
 }
+
 #LoginDialog #appInfoLabel {
-	color: #888;	
+	color: #888;
+}
+
+QHeaderView::section {
+	background: #888;
+	color: #fff;
+	border: 1px solid #ddd;
+	border-style: none solid solid none;
+	min-height: 30px;
+}
+
+QHeaderView::section:hover {
+	background: #777;
+}
+
+QHeaderView::section:pressed {
+	background: #666;
+}
+
+#UserManager #infoLabel,
+#ProductManager #infoLabel,
+#ProductCategoryManager #infoLabel {
+	color: #666;
 }

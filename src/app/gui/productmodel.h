@@ -3,6 +3,7 @@
 
 #include <QAbstractTableModel>
 #include "entity/product.h"
+#include "libs/core/singleton.h"
 
 class ProductModel : public QAbstractTableModel
 {
@@ -25,6 +26,8 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
     void refresh();
+
+    SINGLETON_INSTANCE(ProductModel)
 
 };
 

@@ -789,6 +789,16 @@ void MainWindow::showCalculatorDialog()
 
 }
 
+void MainWindow::onCalculatorFinished()
+{
+#ifdef Q_OS_WIN
+    calculatorProcess->close();
+    calculatorProcess->deleteLater();
+    calculatorProcess = nullptr;
+    g_calc_HWND = NULL;
+#endif
+}
+
 void MainWindow::reloadStyleSheet()
 {
     QFile file(APP_STYLESHEET_PATH);

@@ -1,5 +1,6 @@
 #include "productcategorymodel.h"
 #include "db/db.h"
+#include "db/productcategorytable.h"
 
 ProductCategoryModel::ProductCategoryModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -67,45 +68,13 @@ void ProductCategoryModel::refresh()
     endResetModel();
 }
 
-bool ProductCategoryModel::exists(const QString& name, int id)
-{
-    QSqlQuery q(db::database());
-    // Cek duplikat nama kategori
-    if (id == 0) {
-        q.prepare("select count(0) from product_categories where name=:name");
-    }
-    else {
-        q.prepare("select count(0) from product_categories where name=:name and id<>:id");
-        q.bindValue(":id", id);
-    }
-    q.bindValue(":name", name);
-    if (!DB_EXEC(q)) return false;
-
-    q.next();
-    return q.value(0).toInt() > 0;
-}
-
 void ProductCategoryModel::save(const Item& item)
 {
-    QSqlQuery q(db::database());
-
-    if (item.id == 0) {
-        q.prepare("insert into product_categories"
-                  " ( name) values"
-                  " (:name)");
-    }
-    else {
-        q.prepare("update product_categories set"
-                  " name=:name"
-                  " where id=:id");
-        q.bindValue(":id", item.id);
-    }
-    q.bindValue(":name", item.name);
-    DB_EXEC(q);
+    db::ProductCategoryTable::instance()->save(item.toMap());
 
     int row = -1;
     if (!item.id) {
-        const_cast<Item&>(item).id = q.lastInsertId().toInt();
+        const_cast<Item&>(item).id = db::ProductCategoryTable::instance()->lastInsertId().toInt();
         row = items.size();
         beginInsertRows(QModelIndex(), row, row);
         items.append(item);
@@ -118,11 +87,18 @@ void ProductCategoryModel::save(const Item& item)
                 break;
             }
         }
+        items[row] = item;
         emit dataChanged(index(row, 0), index(row, 0));
     }
 }
 
 void ProductCategoryModel::remove(const Item& item)
 {
+    int row = items.indexOf(item);
 
+    db::ProductCategoryTable::instance()->deleteById(item.id);
+
+    beginRemoveRows(QModelIndex(), row, row);
+    items.removeAt(row);
+    endRemoveRows();
 }

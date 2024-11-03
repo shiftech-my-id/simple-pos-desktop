@@ -3,7 +3,6 @@
 #include "usereditor.h"
 
 #include "common.h"
-#include "db/db.h"
 #include "global.h"
 #include "gui/usermodel.h"
 #include "gui/userproxymodel.h"
@@ -20,8 +19,12 @@ UserManager::UserManager(QWidget *parent) :
     proxyModel(new UserProxyModel(this))
 {
     ui->setupUi(this);
+
     proxyModel->setSourceModel(model);
+    proxyModel->sort(0);
+
     ui->view->setModel(proxyModel);
+    ui->view->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
 
     QToolBar *toolBar = new QToolBar(this);
     toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -30,10 +33,12 @@ UserManager::UserManager(QWidget *parent) :
 
     refreshAction = toolBar->addAction(FA_ICON("fa-solid fa-arrows-rotate"), "&Refresh");
     addAction = toolBar->addAction(FA_ICON("fa-solid fa-plus"), "&Tambah");
+    duplicateAction = toolBar->addAction(FA_ICON("fa-solid fa-copy"), "&Duplikat");
     deleteAction = toolBar->addAction(FA_ICON("fa-solid fa-trash"), "&Hapus");
 
     connect(refreshAction, &QAction::triggered, this, &UserManager::refresh);
     connect(addAction, &QAction::triggered, this, &UserManager::add);
+    connect(duplicateAction, &QAction::triggered, this, &UserManager::duplicate);
     connect(deleteAction, &QAction::triggered, this, &UserManager::remove);
 
     ui->roleComboBox->addItem("Semua Role", -1);
@@ -48,8 +53,9 @@ UserManager::UserManager(QWidget *parent) :
     connect(ui->view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(updateButtonState()));
     connect(ui->showInactiveCheckBox, &QCheckBox::stateChanged, this, &UserManager::filter);
     connect(ui->roleComboBox, &QComboBox::currentTextChanged, this, &UserManager::filter);
+    connect(model, &UserModel::rowsInserted, this, &UserManager::onRowsInserted);
 
-    refresh();
+    filter();
 }
 
 UserManager::~UserManager()
@@ -61,9 +67,7 @@ void UserManager::add()
 {
     UserEditor editor(this);
     editor.setWindowTitle("Tambah Pengguna");
-    if (!editor.exec())
-        return;
-    refresh();
+    editor.exec();
 }
 
 void UserManager::edit()
@@ -77,9 +81,21 @@ void UserManager::edit()
 
     UserEditor editor(this);
     editor.edit(item);
-    if (!editor.exec())
+    editor.exec();
+}
+
+void UserManager::duplicate()
+{
+    User item = currentItem();
+
+    if (item.id == 0) {
+        QMessageBox::information(this, "Informasi", "Silahkan pilih rekaman yang akan diduplikat.");
         return;
-    refresh();
+    }
+    item.id = 0;
+    UserEditor editor(this);
+    editor.edit(item);
+    editor.exec();
 }
 
 void UserManager::remove()
@@ -90,15 +106,10 @@ void UserManager::remove()
         return;
     }
 
-    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman pengguna yang sedangdipilih?") != QMessageBox::Yes)
+    if (msgBoxQuestion(this, "Konfimasi", "Hapus rekaman pengguna yang sedang dipilih?") != QMessageBox::Yes)
         return;
 
-    QSqlQuery q(db::database());
-    q.prepare("delete from users where id=:id");
-    q.bindValue(":id", item.id);
-    DB_EXEC(q);
-
-    refresh();
+    model->remove(item);
 }
 
 void UserManager::refresh()
@@ -118,7 +129,6 @@ void UserManager::filter()
         locale().toString(model->rowCount())
     ));
     updateButtonState();
-    ui->view->horizontalHeader()->setSectionResizeMode(ui->view->horizontalHeader()->count() - 1, QHeaderView::Stretch);
 }
 
 User UserManager::currentItem() const
@@ -134,5 +144,13 @@ void UserManager::updateButtonState()
 {
     bool hasSelection = ui->view->selectionModel()->hasSelection();
     deleteAction->setEnabled(hasSelection);
+}
+
+void UserManager::onRowsInserted(const QModelIndex&, int row, int)
+{
+    const QModelIndex proxyIndex = proxyModel->mapFromSource(model->index(row, 0));
+    ui->view->setFocus();
+    ui->view->selectRow(proxyIndex.row());
+    ui->view->scrollTo(proxyIndex);
 }
 

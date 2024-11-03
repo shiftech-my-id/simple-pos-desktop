@@ -24,9 +24,12 @@ public slots:
     void refresh();
     void add();
     void edit();
+    void duplicate();
     void remove();
     void updateButtonState();
     void filter();
+
+    void onCategoryInserted(const QModelIndex&, int, int);
 
 private:
     Ui::ProductCategoryManager *ui;
@@ -36,6 +39,7 @@ private:
     QAction* refreshAction;
     QAction* addAction;
     QAction* deleteAction;
+    QAction* duplicateAction;
 };
 
 #endif // PRODUCTCATEGORYMANAGER_H

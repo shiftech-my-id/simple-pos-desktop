@@ -3,18 +3,20 @@
 
 #include <QAbstractTableModel>
 #include "entity/productcategory.h"
+#include "libs/core/singleton.h"
 
 class ProductCategoryModel : public QAbstractTableModel
 {
     Q_OBJECT
+
+private:
+    explicit ProductCategoryModel(QObject *parent = nullptr);
 
 public:
     typedef ProductCategory Item;
     typedef ProductCategories Items;
 
     Items items;
-
-    explicit ProductCategoryModel(QObject *parent = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
@@ -28,9 +30,9 @@ public:
 
     void save(const Item& item);
     void remove(const Item& item);
-    static bool exists(const QString& category, int id = 0);
 
-private:
+    SINGLETON_INSTANCE(ProductCategoryModel)
+    Q_DISABLE_COPY(ProductCategoryModel)
 };
 
 #endif // PRODUCTCATEGORYMODEL_H

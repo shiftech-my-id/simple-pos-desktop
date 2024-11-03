@@ -1,5 +1,7 @@
 #include "usermodel.h"
 #include "db/db.h"
+#include "db/usertable.h"
+#include "common.h"
 
 #include <QApplication>
 #include <QColor>
@@ -89,4 +91,51 @@ void UserModel::refresh()
         items.append(item);
     }
     endResetModel();
+}
+
+bool UserModel::save(const Item& item, bool changePassword)
+{
+    QVariantMap data = item.toMap();
+    if (!changePassword) {
+        data.remove("password");
+    }
+    else {
+        data["password"] = encryptPassword(data.value("password").toString());
+    }
+
+    db::UserTable::instance()->save(data);
+
+    int row = -1;
+    if (!item.id) {
+        const_cast<Item&>(item).id = db::UserTable::instance()->lastInsertId().toInt();
+        row = items.size();
+        beginInsertRows(QModelIndex(), row, row);
+        items.append(item);
+        endInsertRows();
+    }
+    else {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.at(i).id == item.id) {
+                row = i;
+                break;
+            }
+        }
+        items[row] = item;
+        emit dataChanged(index(row, 0), index(row, 0));
+    }
+
+    return true;
+}
+
+bool UserModel::remove(const Item& item)
+{
+    int row = items.indexOf(item);
+
+    db::UserTable::instance()->deleteById(item.id);
+
+    beginRemoveRows(QModelIndex(), row, row);
+    items.removeAt(row);
+    endRemoveRows();
+
+    return true;
 }

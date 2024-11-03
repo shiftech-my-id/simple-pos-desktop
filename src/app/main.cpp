@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
     file.open(QFile::ReadOnly | QFile::Text);
     app.setStyleSheet(file.readAll());
 
-    db::init();
+    // db::init();
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();

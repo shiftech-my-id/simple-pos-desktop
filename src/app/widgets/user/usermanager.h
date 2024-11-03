@@ -23,12 +23,15 @@ public:
 public slots:
     void add();
     void edit();
+    void duplicate();
     void remove();
     void refresh();
     void filter();
 
+
 private slots:
     void updateButtonState();
+    void onRowsInserted(const QModelIndex&, int, int);
 
 private:
     Ui::UserManager *ui;
@@ -38,6 +41,7 @@ private:
     QAction* refreshAction;
     QAction* addAction;
     QAction* deleteAction;
+    QAction* duplicateAction;
 };
 
 #endif // USERMANAGER_H

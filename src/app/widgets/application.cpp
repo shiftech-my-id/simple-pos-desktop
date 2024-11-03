@@ -48,7 +48,8 @@ SupplierModel* Application::supplierModel()
 ProductModel* Application::productModel()
 {
     if (_productModel == nullptr) {
-        _productModel = new ProductModel(this);
+        _productModel = ProductModel::instance();
+        _productModel->refresh();
     }
 
     return _productModel;
@@ -57,7 +58,7 @@ ProductModel* Application::productModel()
 ProductCategoryModel* Application::productCategoryModel()
 {
     if (_productCategoryModel == nullptr) {
-        _productCategoryModel = new ProductCategoryModel(this);
+        _productCategoryModel = ProductCategoryModel::instance();
         _productCategoryModel->refresh();
     }
 
@@ -67,7 +68,8 @@ ProductCategoryModel* Application::productCategoryModel()
 UserModel* Application::userModel()
 {
     if (_userModel == nullptr) {
-        _userModel = new UserModel(this);
+        _userModel = UserModel::instance();
+        _userModel->refresh();
     }
 
     return _userModel;

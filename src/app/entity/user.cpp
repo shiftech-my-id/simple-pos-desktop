@@ -10,6 +10,12 @@ QMap<User::Role, QString> User::roleNames = {
     {User::StandardUser, "Pengguna Biasa"},
     };
 
+bool User::operator==(const User& o) const
+{
+    return o.id == id && o.username == username && o.role == role && o.active == active && o.fullName == fullName /* && o.password == password */;
+}
+
+
 QVariantMap User::toMap() const
 {
     QVariantMap map;

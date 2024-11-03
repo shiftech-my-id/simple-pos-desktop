@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>458</width>
-    <height>246</height>
+    <width>500</width>
+    <height>400</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>400</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Produk Kategori</string>
@@ -68,7 +74,7 @@
   <customwidget>
    <class>TableView</class>
    <extends>QTableView</extends>
-   <header>libs/widgets/tableview.h</header>
+   <header location="global">libs/widgets/tableview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
