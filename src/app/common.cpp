@@ -1,32 +1,11 @@
 #include "common.h"
-#include "application.h"
+#include "widgets/application.h"
 
 #include <QMessageBox>
 #include <QAbstractButton>
 #include <QIcon>
 #include <QMap>
 #include <QCryptographicHash>
-
-QList<User::Role> User::roles = {
-    User::NoRole, User::Administrator, User::StandardUser
-};
-
-QMap<User::Role, QString> User::roleNames = {
-    {User::NoRole, "Tidak Ada"},
-    {User::Administrator, "Administrator"},
-    {User::StandardUser, "Pengguna Biasa"},
-};
-
-
-QList<Product::Type> Product::types = {
-    Product::NonStocked, Product::Stocked, Product::Service
-};
-
-QMap<Product::Type, QString> Product::typeNames = {
-    {Product::NonStocked, "Non Stok"},
-    {Product::Stocked, "Stok"},
-    {Product::Service, "Jasa"},
-};
 
 int msgBoxQuestion(QWidget* parent, const QString &title, const QString &text) {
     QMessageBox msgBox(parent);

@@ -7,14 +7,45 @@
 #define APP_DISPLAY_NAME    "Simple POS"
 #define APP_VERSION         0x010100
 #define APP_VERSION_STR     "1.1.0"
-#define APP_SETTINGS_FILENAME APP_NAME ".ini"
+#define APP_SETTINGS_PATH   APP_NAME ".ini"
+#define APP_STYLESHEET_PATH APP_NAME ".qss"
+#define APP_LICENSE_PATH    APP_NAME "-license.txt"
 
-#define DB_DRIVER   "QSQLITE"
-#define DB_FILENAME "simplepos-data.sqlite3"
+#define APP_DEFAULT_DB_DRIVER "QSQLITE"
+#define APP_DEFAULT_DB_FILENAME APP_NAME ".sqlite3"
 
-#define SETTINGS_PATH   "settings.ini"
-#define STYLESHEET_PATH "style.css"
-#define LICENSE_PATH    "simple-pos-license.txt"
+#define SK_APPLOCKER_ADDRESS    "AppLocker/address"
+#define SK_APPLOCKER_PORT       "AppLocker/port"
+#define SK_APPLOCKER_TIMESTAMP  "AppLocker/timestamp"
+
+#define SK_DATABASE_DRIVER       "Database/driver"
+#define SK_DATABASE_USERNAME     "Database/user"
+#define SK_DATABASE_PASSWORD     "Database/pass"
+#define SK_DATABASE_HOSTNAME     "Database/host"
+#define SK_DATABASE_PORT         "Database/port"
+#define SK_DATABASE_DATABASENAME "Database/name"
+
+#define SK_SmallPrinterName    "Printer/small"
+#define SK_MediumPrinterName   "Printer/medium"
+#define SK_GeneralPrinterName  "Printer/general"
+#define SK_BarcodePrinterName  "Printer/barcode"
+
+#define SK_BarcodeLabel_PaperWidth        "BarcodeLabel/paper-width"
+#define SK_BarcodeLabel_PaperHeight       "BarcodeLabel/paper-height"
+#define SK_BarcodeLabel_MarginTop         "BarcodeLabel/margin-top"
+#define SK_BarcodeLabel_MarginLeft        "BarcodeLabel/margin-left"
+#define SK_BarcodeLabel_ColumnCount       "BarcodeLabel/column-count"
+#define SK_BarcodeLabel_RowCount          "BarcodeLabel/row-count"
+#define SK_BarcodeLabel_LabelWidth        "BarcodeLabel/label-width"
+#define SK_BarcodeLabel_LabelHeight       "BarcodeLabel/label-height"
+#define SK_BarcodeLabel_HorizontalSpacing "BarcodeLabel/horizontal-spacing"
+#define SK_BarcodeLabel_VerticalSpacing   "BarcodeLabel/vertical-spacing"
+#define SK_BarcodeLabel_FontSIze          "BarcodeLabel/font-size"
+
+#define SK_Sales_DefaultPriceId         "Sales/default-price-id"
+#define SK_Sales_DefaultReceiptSize     "Sales/default-receipt-size"
+
+#define SK_Print_BalanceSheet_Margins   "Print/balance-sheet.margins"
 
 #define APP_TOOLBAR_ICON_SIZE 12
 
