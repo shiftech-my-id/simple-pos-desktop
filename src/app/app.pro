@@ -147,9 +147,6 @@ HEADERS += \
 
 FORMS += \
     libs/widgets/lefttabwidget.ui \
-    settings/companysettingswidget.ui \
-    settings/printersettingswidget.ui \
-    settings/settingsdialog.ui \
     widgets/aboutdialog.ui \
     widgets/calculatordialog.ui \
     widgets/changepassworddialog.ui \
