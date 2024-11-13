@@ -27,6 +27,7 @@ public slots:
     void remove();
     void refresh();
     void filter();
+    void updateTotal();
 
 private slots:
     void updateButtonState();

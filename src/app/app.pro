@@ -1,6 +1,7 @@
 QT += core gui widgets sql printsupport network
 CONFIG += c++17 fontAwesomeFree
 include(../libs/QtAwesome/QtAwesome.pri)
+LIBS += -lole32 -loleaut32
 RC_FILE = app.rc
 SOURCES += \
     db/usertable.cpp \

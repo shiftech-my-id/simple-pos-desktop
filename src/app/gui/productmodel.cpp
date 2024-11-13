@@ -6,6 +6,7 @@
 
 ProductModel::ProductModel(QObject *parent)
     : QAbstractTableModel{parent}
+    , _totalPrice(0)
 {
 }
 
@@ -20,7 +21,7 @@ int ProductModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return 7;
+    return 8;
 }
 
 QVariant ProductModel::data(const QModelIndex &index, int role) const
@@ -37,7 +38,8 @@ QVariant ProductModel::data(const QModelIndex &index, int role) const
         case 3: return item.uom;
         case 4: return locale.toString(item.cost, 'f', 0);
         case 5: return locale.toString(item.price, 'f', 0);
-        case 6: return item.description;
+        case 6: return locale.toString(item.price * item.stock, 'f', 0);
+        case 7: return item.description;
         }
     }
     else if (role == Qt::EditRole) {
@@ -48,7 +50,8 @@ QVariant ProductModel::data(const QModelIndex &index, int role) const
         case 3: return item.uom;
         case 4: return item.cost;
         case 5: return item.price;
-        case 6: return item.description;
+        case 6: return item.cost * item.price;
+        case 7: return item.description;
         }
     }
     else if (role == Qt::UserRole) {
@@ -65,6 +68,7 @@ QVariant ProductModel::data(const QModelIndex &index, int role) const
         case 3: return Qt::AlignCenter;
         case 4: return static_cast<int>(Qt::AlignVCenter | Qt::AlignRight);
         case 5: return static_cast<int>(Qt::AlignVCenter | Qt::AlignRight);
+        case 6: return static_cast<int>(Qt::AlignVCenter | Qt::AlignRight);
         }
     }
     return QVariant();
@@ -80,7 +84,8 @@ QVariant ProductModel::headerData(int section, Qt::Orientation orientation, int 
         case 3: return "Satuan";
         case 4: return "Harga Beli";
         case 5: return "Harga Jual";
-        case 6: return "Deskripsi";
+        case 6: return "Total";
+        case 7: return "Deskripsi";
         }
     }
     return QVariant();
@@ -90,11 +95,19 @@ void ProductModel::refresh()
 {
     beginResetModel();
     items.clear();
+
     QSqlQuery q(db::database());
+
+    q.prepare("select sum(p.stock*p.price) from products p where p.active=1");
+    DB_EXEC(q);
+    q.next();
+    _totalPrice = q.value(0).toDouble();
     q.prepare("select p.*, c.name category_name"
               " from products p"
               " left join product_categories c on c.id = p.category_id"
               " order by p.id asc");
+    emit totalChanged();
+
     DB_EXEC(q);
     while (q.next()) {
         Item item;

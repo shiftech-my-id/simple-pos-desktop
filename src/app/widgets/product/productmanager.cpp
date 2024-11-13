@@ -49,6 +49,7 @@ ProductManager::ProductManager(QWidget *parent) :
     connect(ui->view->selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), SLOT(updateButtonState()));
     connect(ui->showInactiveCheckBox, &QCheckBox::stateChanged, this, &ProductManager::filter);
     connect(ui->typeComboBox, &QComboBox::currentTextChanged, this, &ProductManager::filter);
+    connect(model, &ProductModel::totalChanged, this, &ProductManager::updateTotal);
 
     refresh();
 }
@@ -154,3 +155,7 @@ void ProductManager::updateButtonState()
     duplicateAction->setEnabled(hasSelection);
 }
 
+void ProductManager::updateTotal()
+{
+    ui->totalLabel->setText(QString("Total Stok Rp. %1").arg(locale().toString(model->totalPrice(), 'f', 0)));
+}

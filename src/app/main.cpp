@@ -11,10 +11,33 @@
 #include <iostream>
 
 #include "global.h"
-#include "common.h"
 #include "db/db.h"
 #include "widgets/mainwindow.h"
 #include "widgets/application.h"
+#include <QCryptographicHash>
+
+#include <windows.h>
+#include <iostream>
+#include <string>
+#include <comutil.h>
+
+QString get_unique_key()
+{
+    DWORD serialNumber = 0;
+    GetVolumeInformationA("C:\\", NULL, 0, &serialNumber, NULL, NULL, NULL, 0);
+    QString sn = QString::fromStdString(std::to_string(serialNumber));
+    sn.prepend("SHX-");
+    sn.append("-2024");
+    return QCryptographicHash::hash(sn.toLocal8Bit(), QCryptographicHash::Sha1).toHex().toUpper();
+}
+
+QString get_serial_number(const QString &key) {
+    return get_unique_key().first(key.size() / 2);
+}
+
+QString get_activation_key(const QString &key) {
+    return get_unique_key().last(key.size() / 2);
+}
 
 static QTextStream sLogStream;
 static int sCounter = 0;
@@ -96,9 +119,14 @@ void check_license() {
         exit(1);
     }
 
-    QByteArray data = f.readAll();
-    if (data != encryptPassword("SIMPLE_POS")) {
-        const char * message = "Lisensi tidak valid, silahkan hubungi tim Shift!";
+    QByteArray storedKey = f.readAll();
+
+    QString appKey = get_unique_key();
+    // QString appSerialNumber = get_serial_number(appKey);
+    QString appActivationKey = get_activation_key(appKey);
+
+    if (storedKey != appActivationKey) {
+        const char * message = "Lisensi tidak valid, silahkan hubungi tim pengembang!";
         qCritical() << message;
         QMessageBox::critical(nullptr, "ERROR", message);
         exit(1);
@@ -123,7 +151,7 @@ int main(int argc, char *argv[])
     file.open(QFile::ReadOnly | QFile::Text);
     app.setStyleSheet(file.readAll());
 
-    // db::init();
+    db::connection(); // trigger database initialization
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();

@@ -29,7 +29,7 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::accept()
 {
-    QSettings settings("settings.ini", QSettings::IniFormat);
+    QSettings settings(APP_SETTINGS_PATH, QSettings::IniFormat);
     settings.beginGroup("CompanyInfo");
     settings.setValue("company_name", ui->storeNameEdit->text().trimmed());
     settings.setValue("company_address", ui->storeAddressEdit->toPlainText().trimmed());

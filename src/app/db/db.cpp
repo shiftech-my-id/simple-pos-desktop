@@ -6,10 +6,38 @@
 #include <QVariant>
 #include <QDebug>
 #include <QSettings>
+#include <QFile>
+#include <QDir>
 
 #include <random>
 
 namespace db {
+
+bool migrate_all() {
+    QStringList filenames = QDir(APP_DEFAULT_DB_MIGRATION_PATH).entryList(QDir::Files);
+    QStringList scripts;
+
+    QFile file;
+    foreach(const QString &filename, filenames) {
+        file.setFileName(filename);
+        if (file.open(QFile::Text, QFile::ReadOnly)) {
+            qWarning() << "database migration error: failed to open migration file " << filename;
+            continue;
+        }
+
+        scripts.append(file.readAll());
+        file.close();
+    }
+
+    QSqlDatabase db = connection();
+    db.transaction();
+    foreach (const QString &sql, scripts) {
+        DB_EXEC(sql);
+    }
+    db.commit();
+
+    return true;
+}
 
 QSqlDatabase connection()
 {
@@ -35,12 +63,22 @@ QSqlDatabase connection()
     if (!db.isValid()) {
         QSettings s(APP_SETTINGS_PATH, QSettings::IniFormat);
         db = QSqlDatabase::addDatabase(s.value(SK_DATABASE_DRIVER, APP_DEFAULT_DB_DRIVER).toString(), QSqlDatabase::defaultConnection);
-        db.setDatabaseName(s.value(SK_DATABASE_DATABASENAME, APP_DEFAULT_DB_FILENAME).toString());
+        const QString dbName = s.value(SK_DATABASE_DATABASENAME, APP_DEFAULT_DB_FILENAME).toString();
+        bool shouldInitDatabase = false;
+
+        db.setDatabaseName(dbName);
         if (db.driverName() != "QSQLITE") {
             db.setHostName(s.value(SK_DATABASE_HOSTNAME).toString());
             db.setPort(s.value(SK_DATABASE_PORT).toInt());
             db.setUserName(s.value(SK_DATABASE_USERNAME).toString());
             db.setPassword(s.value(SK_DATABASE_PASSWORD).toString());
+        }
+        else {
+            shouldInitDatabase = !QFile::exists(dbName);
+        }
+
+        if (shouldInitDatabase) {
+            init();
         }
     }
 
@@ -54,8 +92,9 @@ QSqlDatabase database()
     return connection();
 }
 
-void cleanup()
+void down()
 {
+    qDebug() << "dropping tables";
     DB_EXEC("DROP TABLE IF EXISTS settings");
     DB_EXEC("DROP TABLE IF EXISTS users");
     DB_EXEC("DROP TABLE IF EXISTS products");
@@ -65,104 +104,12 @@ void cleanup()
     DB_EXEC("DROP TABLE IF EXISTS stock_update_details");
 }
 
-void seed()
+void up()
 {
-    QSqlDatabase db = connection();
-
-    //  Kode untuk generate dummy products
-    std::random_device rd; // obtain a random number from hardware
-    std::mt19937 generator(rd()); // seed the generator
-    std::uniform_int_distribution<> stockdist(1, 1000); // define the range
-    std::uniform_int_distribution<> costdist(1, 3000); // define the range
-    std::uniform_int_distribution<> categoryDist(1, 100); // define the range
-    std::uniform_int_distribution<> activeDist(0, 1); // define the range
-
-    QSqlQuery q(db);
-    db.transaction();
-
-    q.prepare("insert into users ( username, fullname, role, password, active) "
-              "values(:username,:fullname,:role,:password,:active)");
-    q.bindValue(":username", "admin");
-    q.bindValue(":fullname", "Administrator");
-    q.bindValue(":password", encryptPassword("12345"));
-    q.bindValue(":active", true);
-    q.bindValue(":role", 1);
-    DB_EXEC(q);
-
-    for (int i = 1; i <= 10; i++) {
-        q.prepare("insert into users ( username, fullname, role, password, active) "
-                  "values(:username,:fullname,:role,:password,:active)");
-        q.bindValue(":username", "user" + QString::number(i));
-        q.bindValue(":fullname", "User " + QString::number(i));
-        q.bindValue(":password", encryptPassword("12345"));
-        q.bindValue(":active", true);
-        q.bindValue(":role", 2);
-        DB_EXEC(q);
-    }
-
-    for (int i = 1; i <= 25; i++) {
-        QString name = QString("Kategori %1").arg(i);
-        q.prepare("insert into product_categories"
-                  " (name)"
-                  " values"
-                  " (:name)");
-        q.bindValue(":name", name);
-        DB_EXEC(q);
-    }
-
-    for (int i = 1; i <= 10000; i++) {
-        int cost = costdist(generator) * 100;
-        q.prepare("insert into products"
-                  " ( name, description, category_id, barcode, uom, type, stock, cost, price, active)"
-                  " values"
-                  " (:name,:description,:category_id,:barcode,:uom,:type,:stock,:cost,:price,:active)");
-        q.bindValue(":name", QString("Produk %1").arg(i));
-        q.bindValue(":description", QString("Deskripsi Produk %1").arg(i));
-        q.bindValue(":barcode", QString::number(i));
-        q.bindValue(":category_id", categoryDist(generator));
-        q.bindValue(":uom", "bh");
-        q.bindValue(":type", 1);
-        q.bindValue(":stock", stockdist(generator));
-        q.bindValue(":cost", cost);
-        q.bindValue(":price", cost + ((20. / 100.) * cost));
-        q.bindValue(":active", activeDist(generator));
-        DB_EXEC(q);
-    }
-
-    for (int i = 1; i <= 100; i++) {
-        q.prepare("insert into parties"
-                  " (type, name, address, phone, active)"
-                  " values"
-                  " (1,:name,:address,:phone,1)");
-        q.bindValue(":name", QString("Supplier %1").arg(i));
-        q.bindValue(":address", QString("Alamat Supplier %1").arg(i));
-        q.bindValue(":phone", QString("0812-1000-0%1").arg(QString::number(i)));
-        DB_EXEC(q);
-    }
-
-    for (int i = 1; i <= 1000; i++) {
-        q.prepare("insert into parties"
-                  " (type, name, address, phone, active)"
-                  " values"
-                  " (2,:name,:address,:phone,1)");
-        q.bindValue(":name", QString("Customer %1").arg(i));
-        q.bindValue(":address", QString("Alamat Customer %1").arg(i));
-        q.bindValue(":phone", QString("0812-2000-0%1").arg(QString::number(i)));
-        DB_EXEC(q);
-    }
-
-    db.commit();
-}
-
-void reset()
-{
-
-}
-
-void init() {
-    cleanup();
+    qDebug() << "creating tables";
     DB_EXEC("CREATE TABLE settings ("
             " id INTEGER NOT NULL DEFAULT 0,"
+            " name TEXT UNIQUE NOT NULL DEFAULT '',"
             " data TEXT NOT NULL DEFAULT '',"
             " PRIMARY KEY(id AUTOINCREMENT)"
             ")");
@@ -247,7 +194,110 @@ void init() {
             " subtotal_price REAL NOT NULL DEFAULT 0,"
             " PRIMARY KEY(id AUTOINCREMENT)"
             ")");
+}
+
+void seed()
+{
+    qDebug() << "generating intial data";
+    QSqlDatabase db = connection();
+
+    //  Kode untuk generate dummy products
+    std::random_device rd; // obtain a random number from hardware
+    std::mt19937 generator(rd()); // seed the generator
+    std::uniform_int_distribution<> stockdist(1, 1000); // define the range
+    std::uniform_int_distribution<> costdist(1, 3000); // define the range
+    std::uniform_int_distribution<> categoryDist(1, 100); // define the range
+    std::uniform_int_distribution<> activeDist(0, 1); // define the range
+
+    QSqlQuery q(db);
+
+    db.transaction();
+    q.prepare("insert into users ( username, fullname, role, password, active) "
+              "values(:username,:fullname,:role,:password,:active)");
+    q.bindValue(":username", "admin");
+    q.bindValue(":fullname", "Administrator");
+    q.bindValue(":password", encryptPassword("12345"));
+    q.bindValue(":active", true);
+    q.bindValue(":role", 1);
+    DB_EXEC(q);
+
+    for (int i = 1; i <= 10; i++) {
+        q.prepare("insert into users ( username, fullname, role, password, active) "
+                  "values(:username,:fullname,:role,:password,:active)");
+        q.bindValue(":username", "user" + QString::number(i));
+        q.bindValue(":fullname", "User " + QString::number(i));
+        q.bindValue(":password", encryptPassword("12345"));
+        q.bindValue(":active", true);
+        q.bindValue(":role", 2);
+        DB_EXEC(q);
+    }
+
+    for (int i = 1; i <= 25; i++) {
+        QString name = QString("Kategori %1").arg(i);
+        q.prepare("insert into product_categories"
+                  " (name)"
+                  " values"
+                  " (:name)");
+        q.bindValue(":name", name);
+        DB_EXEC(q);
+    }
+
+    for (int i = 1; i <= 10000; i++) {
+        int cost = costdist(generator) * 100;
+        q.prepare("insert into products"
+                  " ( name, description, category_id, barcode, uom, type, stock, cost, price, active)"
+                  " values"
+                  " (:name,:description,:category_id,:barcode,:uom,:type,:stock,:cost,:price,:active)");
+        q.bindValue(":name", QString("Produk %1").arg(i));
+        q.bindValue(":description", QString("Deskripsi Produk %1").arg(i));
+        q.bindValue(":barcode", QString::number(i));
+        q.bindValue(":category_id", categoryDist(generator));
+        q.bindValue(":uom", "bh");
+        q.bindValue(":type", 1);
+        q.bindValue(":stock", stockdist(generator));
+        q.bindValue(":cost", cost);
+        q.bindValue(":price", cost + ((20. / 100.) * cost));
+        q.bindValue(":active", activeDist(generator));
+        DB_EXEC(q);
+    }
+
+    for (int i = 1; i <= 100; i++) {
+        q.prepare("insert into parties"
+                  " (type, name, address, phone, active)"
+                  " values"
+                  " (1,:name,:address,:phone,1)");
+        q.bindValue(":name", QString("Supplier %1").arg(i));
+        q.bindValue(":address", QString("Alamat Supplier %1").arg(i));
+        q.bindValue(":phone", QString("0812-1000-0%1").arg(QString::number(i)));
+        DB_EXEC(q);
+    }
+
+    for (int i = 1; i <= 1000; i++) {
+        q.prepare("insert into parties"
+                  " (type, name, address, phone, active)"
+                  " values"
+                  " (2,:name,:address,:phone,1)");
+        q.bindValue(":name", QString("Customer %1").arg(i));
+        q.bindValue(":address", QString("Alamat Customer %1").arg(i));
+        q.bindValue(":phone", QString("0812-2000-0%1").arg(QString::number(i)));
+        DB_EXEC(q);
+    }
+    db.commit();
+}
+
+void reset()
+{
+
+}
+
+void init() {
+    QSqlDatabase db = db::connection();
+
+    db.transaction();
+    down();
+    up();
     db::seed();
+    db.commit();
 }
 
 bool exec(const QString &str, const char* file, int line, const char *fn)

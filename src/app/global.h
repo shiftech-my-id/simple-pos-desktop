@@ -9,7 +9,8 @@
 #define APP_VERSION_STR     "1.1.0"
 #define APP_SETTINGS_PATH   APP_NAME ".ini"
 #define APP_STYLESHEET_PATH APP_NAME ".qss"
-#define APP_LICENSE_PATH    APP_NAME "-license.txt"
+#define APP_LICENSE_PATH    APP_NAME "-license"
+#define APP_DEFAULT_DB_MIGRATION_PATH "database/migration"
 
 #define APP_DEFAULT_DB_DRIVER "QSQLITE"
 #define APP_DEFAULT_DB_FILENAME APP_NAME ".sqlite3"

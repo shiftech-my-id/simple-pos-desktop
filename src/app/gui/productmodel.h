@@ -9,6 +9,9 @@ class ProductModel : public QAbstractTableModel
 {
     Q_OBJECT
 
+signals:
+    void totalChanged();
+
 public:
     typedef Product Item;
     typedef Products Items;
@@ -28,6 +31,11 @@ public:
     void refresh();
 
     SINGLETON_INSTANCE(ProductModel)
+
+    inline double totalPrice() const { return _totalPrice; }
+
+private:
+    double _totalPrice;
 
 };
 
