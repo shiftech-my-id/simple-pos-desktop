@@ -7,6 +7,8 @@ namespace Ui {
 class SettingsDialog;
 }
 
+class CompanySettingsWidget;
+
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
@@ -19,6 +21,7 @@ public slots:
     void accept();
 private:
     Ui::SettingsDialog *ui;
+    CompanySettingsWidget *companySettingsWidget;
 };
 
 #endif // SETTINGSDIALOG_H

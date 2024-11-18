@@ -5,8 +5,9 @@ using namespace db;
 ProductTable::ProductTable()
     : Table("products", QStringList() << "id")
 {
-    _fetchQuery = "SELECT products.*, product_categories.name category_name FROM products"
-                  " LEFT JOIN product_categories ON product_categories.id = products.category_id";
+    _fetchQuery = "SELECT p.*, pc.name category_name, s.name supplier_name FROM products p"
+                  " LEFT JOIN product_categories pc ON pc.id = p.category_id"
+                  " LEFT JOIN parties s ON s.id = p.supplier_id";
 }
 
 bool ProductTable::save(const QVariantMap &pData)

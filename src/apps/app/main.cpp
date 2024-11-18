@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
     app.setStyleSheet(file.readAll());
 
     db::connection(); // trigger database initialization
+    db::init();
 
     MainWindow mw;
     mw.updateDatabaseInfoLabel();

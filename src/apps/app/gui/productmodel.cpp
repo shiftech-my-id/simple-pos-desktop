@@ -123,6 +123,7 @@ void ProductModel::refresh()
         item.stock = q.value("stock").toInt();
         item.active = q.value("active").toBool();
         item.categoryId = q.value("category_id").toInt();
+        item.supplierId = q.value("supplier_id").toInt();
         items.append(item);
     }
     endResetModel();

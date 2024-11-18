@@ -177,6 +177,7 @@ RESOURCES += \
     app.qrc
 
 DISTFILES += \
+    CODE_REVIEW.txt \
     app.ico \
     app.rc \
     resources/reports/kwitansi.html \

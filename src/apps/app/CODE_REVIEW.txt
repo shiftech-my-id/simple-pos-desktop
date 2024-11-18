@@ -1,0 +1,5 @@
+Source code saat ini masih banyak yang perlu dirapihkan / direfactor.
+Beberapa poin yang perlu diperbaiki antara lain:
+- Pemindahan eksekusi query database dari widgets ke model / table
+- Konsistensi penggunaan tabel atau model
+- Konsistensi mekanisme storage, apakah lazy load atau diload di awal waktu

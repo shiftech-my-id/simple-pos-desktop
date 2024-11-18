@@ -3,8 +3,11 @@
 #include "productcategoryeditor.h"
 #include "db/db.h"
 #include "widgets/application.h"
+#include "widgets/supplier/suppliereditor.h"
 #include "gui/productcategorymodel.h"
 #include "gui/productcategoryproxymodel.h"
+#include "gui/suppliermodel.h"
+#include "gui/supplierproxymodel.h"
 
 #include <QMessageBox>
 #include <QAbstractItemView>
@@ -13,7 +16,9 @@ ProductEditor::ProductEditor(QWidget *parent) :
     QDialog(parent, Qt::WindowCloseButtonHint),
     ui(new Ui::ProductEditor),
     categoryModel(qApp->productCategoryModel()),
-    categoryProxyModel(new ProductCategoryProxyModel(this))
+    categoryProxyModel(new ProductCategoryProxyModel(this)),
+    supplierModel(qApp->supplierModel()),
+    supplierProxyModel(new SupplierProxyModel(this))
 {
     ui->setupUi(this);
 
@@ -23,6 +28,12 @@ ProductEditor::ProductEditor(QWidget *parent) :
     ui->categoryComboBox->setModel(categoryProxyModel);
     ui->categoryComboBox->setModelColumn(0);
     ui->categoryComboBox->view()->setAlternatingRowColors(true);
+
+    supplierProxyModel->setSourceModel(supplierModel);
+    supplierProxyModel->sort(0);
+    ui->supplierComboBox->setModel(supplierProxyModel);
+    ui->supplierComboBox->setModelColumn(0);
+    ui->supplierComboBox->view()->setAlternatingRowColors(true);
 
     QMap<Product::Type, QString>::iterator i;
     for (i = Product::typeNames.begin(); i != Product::typeNames.end(); ++i) {
@@ -40,10 +51,12 @@ ProductEditor::ProductEditor(QWidget *parent) :
     connect(ui->saveButton, SIGNAL(clicked()), SLOT(accept()));
     connect(ui->cancelButton, SIGNAL(clicked()), SLOT(reject()));
     connect(ui->addCategoryButton, SIGNAL(clicked()), SLOT(addCategory()));
+    connect(ui->addSupplierButton, SIGNAL(clicked()), SLOT(addSupplier()));
 
     ui->saveButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-check"));
     ui->cancelButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-xmark"));
     ui->addCategoryButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-plus"));
+    ui->addSupplierButton->setIcon(qApp->qtAwesome()->icon("fa-solid fa-plus"));
 }
 
 ProductEditor::~ProductEditor()
@@ -59,6 +72,7 @@ void ProductEditor::edit(const Product &pItem)
     ui->barcodeEdit->setText(item.barcode);
     ui->typeComboBox->setCurrentIndex(ui->typeComboBox->findData(item.type));
     ui->categoryComboBox->setCurrentIndex(ui->categoryComboBox->findData(item.categoryId));
+    ui->supplierComboBox->setCurrentIndex(ui->supplierComboBox->findData(item.supplierId));
     ui->uomComboBox->lineEdit()->setText(item.uom);
     ui->activeCheckBox->setChecked(item.active);
     ui->stockSpinBox->setValue(item.stock);
@@ -89,6 +103,7 @@ void ProductEditor::accept()
     item.stock = ui->stockSpinBox->value();
     item.active = ui->activeCheckBox->isChecked();
     item.categoryId = categoryProxyModel->index(ui->categoryComboBox->currentIndex(), 0).data(Qt::UserRole).toInt();
+    item.supplierId = supplierProxyModel->index(ui->supplierComboBox->currentIndex(), 0).data(Qt::UserRole).toInt();
 
     if (item.name.isEmpty()) {
         QMessageBox::warning(this, "Peringatan", "Nama produk harus diisi.");
@@ -140,8 +155,8 @@ void ProductEditor::accept()
 
     if (item.id == 0) {
         q.prepare("insert into products"
-                  " ( name, description, barcode, uom, cost, price, type, stock, active, category_id) values"
-                  " (:name,:description,:barcode,:uom,:cost,:price,:type,:stock,:active,:category_id)");
+                  " ( name, description, barcode, uom, cost, price, type, stock, active, category_id, supplier_id) values"
+                  " (:name,:description,:barcode,:uom,:cost,:price,:type,:stock,:active,:category_id,:supplier_id)");
     }
     else {
         q.prepare("update products set"
@@ -154,7 +169,8 @@ void ProductEditor::accept()
                   " type=:type,"
                   " stock=:stock,"
                   " active=:active,"
-                  " category_id=:category_id"
+                  " category_id=:category_id,"
+                  " supplier_id=:supplier_id"
                   " where id=:id");
         q.bindValue(":id", item.id);
     }
@@ -166,6 +182,7 @@ void ProductEditor::accept()
     q.bindValue(":price", item.price);
     q.bindValue(":type", item.type);
     q.bindValue(":category_id", item.categoryId == 0 ? QVariant() : item.categoryId);
+    q.bindValue(":supplier_id", item.supplierId == 0 ? QVariant() : item.supplierId);
     q.bindValue(":stock", item.stock);
     q.bindValue(":active", item.active);
     DB_EXEC(q);
@@ -185,4 +202,14 @@ void ProductEditor::addCategory()
 
     const QString name = editor.name();
     ui->categoryComboBox->setCurrentIndex(ui->categoryComboBox->findText(name));
+}
+
+void ProductEditor::addSupplier()
+{
+    SupplierEditor editor;
+    if (!editor.exec())
+        return;
+
+    const QString name = editor.name();
+    ui->supplierComboBox->setCurrentIndex(ui->supplierComboBox->findText(name));
 }

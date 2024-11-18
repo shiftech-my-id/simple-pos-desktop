@@ -106,3 +106,8 @@ void SupplierEditor::accept()
 
     QDialog::accept();
 }
+
+QString SupplierEditor::name() const
+{
+    return ui->nameEdit->text().trimmed();
+}

@@ -11,6 +11,8 @@ class ProductEditor;
 
 class ProductCategoryModel;
 class ProductCategoryProxyModel;
+class SupplierModel;
+class SupplierProxyModel;
 
 class ProductEditor : public QDialog
 {
@@ -27,12 +29,15 @@ public:
 
 public slots:
     void addCategory();
+    void addSupplier();
     void accept();
 
 private:
     Ui::ProductEditor *ui;
     ProductCategoryModel *categoryModel;
     ProductCategoryProxyModel *categoryProxyModel;
+    SupplierModel *supplierModel;
+    SupplierProxyModel *supplierProxyModel;
 };
 
 #endif // PRODUCTEDITOR_H

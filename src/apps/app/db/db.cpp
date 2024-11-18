@@ -108,10 +108,9 @@ void up()
 {
     qDebug() << "creating tables";
     DB_EXEC("CREATE TABLE settings ("
-            " id INTEGER NOT NULL DEFAULT 0,"
-            " name TEXT UNIQUE NOT NULL DEFAULT '',"
-            " data TEXT NOT NULL DEFAULT '',"
-            " PRIMARY KEY(id AUTOINCREMENT)"
+            " key TEXT UNIQUE NOT NULL DEFAULT '',"
+            " value TEXT NOT NULL DEFAULT '',"
+            " PRIMARY KEY(key)"
             ")");
     DB_EXEC("CREATE TABLE users ("
             " id INTEGER NOT NULL DEFAULT 0,"
@@ -265,7 +264,7 @@ void seed()
         q.prepare("insert into parties"
                   " (type, name, address, phone, active)"
                   " values"
-                  " (1,:name,:address,:phone,1)");
+                  " (2,:name,:address,:phone,1)");
         q.bindValue(":name", QString("Supplier %1").arg(i));
         q.bindValue(":address", QString("Alamat Supplier %1").arg(i));
         q.bindValue(":phone", QString("0812-1000-0%1").arg(QString::number(i)));
@@ -276,7 +275,7 @@ void seed()
         q.prepare("insert into parties"
                   " (type, name, address, phone, active)"
                   " values"
-                  " (2,:name,:address,:phone,1)");
+                  " (1,:name,:address,:phone,1)");
         q.bindValue(":name", QString("Customer %1").arg(i));
         q.bindValue(":address", QString("Alamat Customer %1").arg(i));
         q.bindValue(":phone", QString("0812-2000-0%1").arg(QString::number(i)));

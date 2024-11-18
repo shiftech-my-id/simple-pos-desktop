@@ -40,6 +40,7 @@ SupplierModel* Application::supplierModel()
 {
     if (_supplierModel == nullptr) {
         _supplierModel = new SupplierModel(this);
+        _supplierModel->refresh();
     }
 
     return _supplierModel;

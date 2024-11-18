@@ -3,36 +3,36 @@
 using namespace db;
 
 SettingTable::SettingTable()
-    : Table("settings", QStringList() << "id")
+    : Table("settings", QStringList() << "key")
 {
 }
 
-bool SettingTable::set(const QString& id, const QVariant& val)
+bool SettingTable::set(const QString& key, const QVariant& val)
 {
     QSqlQuery q(db::connection());
-    q.prepare("select count(0) from settings where id=?");
-    q.bindValue(0, id);
+    q.prepare("select count(0) from settings where `key`=?");
+    q.bindValue(0, key);
     if (!DB_EXEC(q)) return false;
     if (!q.next()) return false;
 
     if (q.value(0).toInt() == 0) {
-        q.prepare("insert into settings(id, data)"
-                  " values(:id,:data)");
+        q.prepare("insert into settings(`key`, `value`)"
+                  " values(:key,:value)");
     }
     else {
         q.prepare("update settings set"
-                  " data=:data where id=:id");
+                  " `value`=:value where `key`=:key");
     }
-    q.bindValue(":id", id);
-    q.bindValue(":data", val);
+    q.bindValue(":key", key);
+    q.bindValue(":value", val);
     return DB_EXEC(q);
 }
 
-QVariant SettingTable::get(const QString& id, const QVariant& def)
+QVariant SettingTable::get(const QString& key, const QVariant& def)
 {
     QSqlQuery q(db::connection());
-    q.prepare("select data from settings where id=?");
-    q.bindValue(0, id);
+    q.prepare("select `value` from settings where `key`=?");
+    q.bindValue(0, key);
     if (!DB_EXEC(q)) return def;
     if (!q.next()) return def;
     return q.value(0);

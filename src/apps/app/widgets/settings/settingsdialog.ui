@@ -6,139 +6,100 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>389</width>
-    <height>217</height>
+    <width>469</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>&amp;Nama Toko</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeNameEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="storeNameEdit"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>&amp;Alamat</string>
-       </property>
-       <property name="buddy">
-        <cstring>storeAddressEdit</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPlainTextEdit" name="storeAddressEdit">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>100</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>100</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>&amp;Ukuran Nota</string>
-       </property>
-       <property name="buddy">
-        <cstring>salesInvoicePaperSizeComboBox</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="salesInvoicePaperSizeComboBox">
-       <item>
-        <property name="text">
-         <string>A5 Landscape / Continues Form 9.5&quot; x 11&quot; 2PLY</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>58mm</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>80mm</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
+    <widget class="LeftTabWidget" name="contentFrame" native="true"/>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
+    <widget class="QFrame" name="footerFrame">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>5</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>&amp;Simpan</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../app.qrc">
+          <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cancelButton">
+        <property name="text">
+         <string>&amp;Tutup</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../app.qrc">
+          <normaloff>:/icons/clear</normaloff>:/icons/clear</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="saveButton">
-       <property name="text">
-        <string>&amp;Simpan</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app.qrc">
-         <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="text">
-        <string>&amp;Tutup</string>
-       </property>
-       <property name="icon">
-        <iconset resource="app.qrc">
-         <normaloff>:/icons/clear</normaloff>:/icons/clear</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LeftTabWidget</class>
+   <extends>QWidget</extends>
+   <header>lefttabwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="app.qrc"/>
+  <include location="../../app.qrc"/>
  </resources>
  <connections/>
 </ui>

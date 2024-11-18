@@ -18,6 +18,8 @@ public:
     explicit SupplierEditor(QWidget *parent = nullptr);
     ~SupplierEditor();
 
+    QString name() const;
+
     void edit(const Supplier &item);
     void duplicate(const Supplier &item);
 
