@@ -10,34 +10,9 @@
 #include <QDir>
 
 #include <random>
+#include "migrationmanager.h"
 
 namespace db {
-
-bool migrate_all() {
-    QStringList filenames = QDir(APP_DEFAULT_DB_MIGRATION_PATH).entryList(QDir::Files);
-    QStringList scripts;
-
-    QFile file;
-    foreach(const QString &filename, filenames) {
-        file.setFileName(filename);
-        if (file.open(QFile::Text, QFile::ReadOnly)) {
-            qWarning() << "database migration error: failed to open migration file " << filename;
-            continue;
-        }
-
-        scripts.append(file.readAll());
-        file.close();
-    }
-
-    QSqlDatabase db = connection();
-    db.transaction();
-    foreach (const QString &sql, scripts) {
-        DB_EXEC(sql);
-    }
-    db.commit();
-
-    return true;
-}
 
 QSqlDatabase connection()
 {
@@ -286,17 +261,19 @@ void seed()
 
 void reset()
 {
-
 }
 
 void init() {
     QSqlDatabase db = db::connection();
 
-    db.transaction();
-    down();
-    up();
+    MigrationManager manager(db);
+    manager.applyMigrations();
+
+    // db.transaction();
+    // down();
+    // up();
     db::seed();
-    db.commit();
+    // db.commit();
 }
 
 bool exec(const QString &str, const char* file, int line, const char *fn)

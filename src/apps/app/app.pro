@@ -3,6 +3,7 @@ CONFIG += c++17 fontAwesomeFree
 LIBS += -lole32 -loleaut32
 RC_FILE = app.rc
 SOURCES += \
+    db/migrationmanager.cpp \
     db/usertable.cpp \
     entity/abstractentity.cpp \
     entity/address.cpp \
@@ -69,6 +70,7 @@ SOURCES += \
     widgets/user/usermanager.cpp
 
 HEADERS += \
+    db/migrationmanager.h \
     db/usertable.h \
     entity/abstractentity.h \
     entity/address.h \
@@ -173,13 +175,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 TARGET = simple-pos
 
-RESOURCES += \
-    app.qrc
+RESOURCES += app.qrc
 
 DISTFILES += \
     CODE_REVIEW.txt \
     app.ico \
     app.rc \
+    resources/migrations/001_init.sql \
+    resources/migrations/002_something.sql \
     resources/reports/kwitansi.html \
     resources/reports/lap-penjualan-bulanan-per-tanggal.html \
     resources/reports/lap-penjualan-harian-per-produk.html \

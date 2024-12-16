@@ -32,11 +32,11 @@ public slots:
 
 private:
     void processText();
-    double currentInput;
-    double currentResult;
 
 private:
     Ui::CalculatorDialog *ui;
+    double currentResult;
+    double currentInput;
 };
 
 #endif // CALCULATORDIALOG_H

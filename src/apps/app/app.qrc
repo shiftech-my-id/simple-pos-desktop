@@ -11,4 +11,8 @@
         <file alias="print">resources/icons/outline_print_black_24dp.png</file>
         <file alias="save">resources/icons/outline_save_black_24dp.png</file>
     </qresource>
+    <qresource>
+        <file>resources/migrations/001_init.sql</file>
+        <file>resources/migrations/002_something.sql</file>
+    </qresource>
 </RCC>

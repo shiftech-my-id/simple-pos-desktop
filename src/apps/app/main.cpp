@@ -87,6 +87,8 @@ void init_applocker(QSettings &settings)
         }
     }
 }
+#include <QFile>
+#include <QResource>
 
 int main(int argc, char *argv[])
 {
@@ -101,9 +103,14 @@ int main(int argc, char *argv[])
     init_applocker(settings);
     init_stylesheet();
 
-    QFile file(APP_STYLESHEET_PATH);
-    file.open(QFile::ReadOnly | QFile::Text);
-    app.setStyleSheet(file.readAll());
+    if (!QFile::exists(APP_STYLESHEET_PATH)) {
+        qWarning() << "Stylesheet file not found" << APP_STYLESHEET_PATH;
+    }
+    else {
+        QFile file(APP_STYLESHEET_PATH);
+        file.open(QFile::ReadOnly | QFile::Text);
+        app.setStyleSheet(file.readAll());
+    }
 
     db::connection(); // trigger database initialization
     db::init();
